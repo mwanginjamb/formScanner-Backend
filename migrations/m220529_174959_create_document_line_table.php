@@ -16,7 +16,7 @@ class m220529_174959_create_document_line_table extends Migration
             'id' => $this->primaryKey(),
             'candidate_id' => $this->integer(),
             'votes' => $this->integer(10),
-            'polling_station_id' => $this->integer(),
+            'polling_station_id' => $this->string(30),
             'created_at' => $this->integer(25),
             'updated_at' => $this->integer(25),
             'created_by' => $this->integer(25),

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Documents;
+use Couchbase\Document;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
@@ -117,6 +118,7 @@ class SiteController extends Controller
 
         if($data && !empty($data->ImageBinary)){
 
+            $model = Documents::findOne(['id' => $data->id]);
             /*Process Media for Saving*/
             $bin = base64_decode($data->ImageBinary);
             $size = getImageSizeFromString($bin);
@@ -125,10 +127,7 @@ class SiteController extends Controller
             file_put_contents($img_file, $bin);
 
             // Create a record in Docs Table
-            $model = new Documents();
-            $model->description = '';
             $model->local_file_path = Url::home(true).$img_file;
-            $model->polling_station = '';
             if(!$model->save())
             {
                 return [
