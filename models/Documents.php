@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\apiV1\resources\DocumentLineResource;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -81,5 +82,10 @@ class Documents extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\queries\DocumentsQuery(get_called_class());
+    }
+
+    public function getLines()
+    {
+        return $this->hasMany(DocumentLineResource::class,['polling_station_id' => 'polling_station']);
     }
 }

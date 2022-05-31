@@ -9,14 +9,14 @@
 namespace app\modules\apiV1\resources;
 
 
-use app\models\User;
+use app\models\DocumentLine;
 
-class UserResource extends User
+class DocumentLineResource extends DocumentLine
 {
  public function fields()
  {
      return [
-         'id','username','email','access_token','phone_number'
+         'votes','created_at','polling_station_id','candidate'
      ];
  }
 }

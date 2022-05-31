@@ -9,14 +9,15 @@
 namespace app\modules\apiV1\controllers;
 
 
-use app\models\Documents;
-use app\modules\apiV1\resources\DocumentResource;
+use app\models\Candidate;
+use app\models\DocumentLine;
+use app\modules\apiV1\resources\DocumentLineResource;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
-class DocumentController extends ActiveController
+class ResultLineController extends ActiveController
 {
-    public $modelClass = DocumentResource::class;
+    public $modelClass = DocumentLineResource::class;
 
     public function behaviors()
     {
