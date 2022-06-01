@@ -32,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
            // 'id',
             'name',
+            'countable',
             'created_at',
             'updated_at',
             'created_by',

@@ -15,6 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int|null $countable
  */
 class Candidate extends \yii\db\ActiveRecord
 {
@@ -41,6 +42,7 @@ class Candidate extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            ['countable', 'integer'],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name'], 'string', 'max' => 250],
             ['name', 'unique','message' => 'This candidate is already registered.'],

@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('View List', ['index'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -33,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'created_at:datetime',
             'updated_at:datetime',
+           'countable'
            // 'created_by',
            // 'updated_by',
         ],
