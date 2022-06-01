@@ -64,7 +64,9 @@ $config = [
                 ]
             ],
         ],
-
+        'africasms' => [
+            'class' => 'app\helpers\Sms_Sender',
+        ],
     ],
     'params' => $params,
     'modules' => [

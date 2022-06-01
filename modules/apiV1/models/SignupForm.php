@@ -72,7 +72,7 @@ class SignupForm extends Model
         $this->_user->status = 10;
         $this->_user->phone_number = $this->phone_number;
 
-        if($this->_user->save()){ // @todo send otp
+        if($this->_user->save() && $this->sendSms($this->_user)){
             return true;
         }else{
             return false;
@@ -99,17 +99,10 @@ class SignupForm extends Model
     }
 
     // Send OTP SMS
-    protected function sendSms($user)
+    protected function sendSms(User $user)
     {
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
-            ->send();
+        $number = $user->phone_number;
+        $message = "Agent Authentication OTP: ".$user->otp."\r\n";
+        Yii::$app->africasms->sendSms($number,$message);
     }
 }
