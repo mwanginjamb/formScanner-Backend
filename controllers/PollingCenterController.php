@@ -177,9 +177,9 @@ class PollingCenterController extends Controller
     private function saveData($sheetData)
     {
 
-        print '<pre>';
-        print_r($sheetData);
-        exit;
+//        print '<pre>';
+//        print_r($sheetData);
+//        exit;
 
         foreach ($sheetData as $key => $data) {
 

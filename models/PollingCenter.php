@@ -17,7 +17,7 @@ use Yii;
  * @property string|null $registration_center_name
  * @property string|null $caw_name
  * @property int|null $voters_per_registration_center
- * @property int|null $polling_station_code
+ * @property string|null $polling_station_code
  * @property string|null $polling_station_name
  * @property int|null $voters_per_polling_station
  * @property int|null $created_at
@@ -41,10 +41,11 @@ class PollingCenter extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['county_code', 'constituency_code', 'caw_code','registration_center_code', 'voters_per_registration_center', 'polling_station_code', 'voters_per_polling_station', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['county_code', 'constituency_code', 'caw_code','registration_center_code', 'voters_per_registration_center', 'voters_per_polling_station', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['county_name'], 'string', 'max' => 30],
-            [['constituency_name', 'registration_center_name', 'polling_station_name'], 'string', 'max' => 150],
+            [['constituency_name', 'registration_center_name', 'polling_station_name','polling_station_code'], 'string', 'max' => 150],
             [['caw_name'], 'string', 'max' => 255],
+            ['polling_station_code','unique']
         ];
     }
 
