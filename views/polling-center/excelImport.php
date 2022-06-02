@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Communities */
 
 $this->title = 'Add Polling Stations via Excel Import';
-$this->params['breadcrumbs'][] = ['label' => 'Organizations', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Polling Centers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <section class="flexbox-container">

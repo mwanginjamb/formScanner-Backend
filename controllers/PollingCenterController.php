@@ -187,7 +187,7 @@ class PollingCenterController extends Controller
             if ($key >= 2) {
                 if (trim($data['C']) !== '') { // Has to have a constituency
                     $model = new PollingCenter();
-                    $model->constituency_code = trim($data['A']);
+                    $model->county_code = trim($data['A']);
                     $model->county_name = trim($data['B']);
                     $model->constituency_code = trim($data['C']);
                     $model->constituency_name =  trim($data['D']);
