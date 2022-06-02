@@ -172,12 +172,14 @@ class PollingCenterController extends Controller
         return $sheetData;
     }
 
+
+
     private function saveData($sheetData)
     {
 
-        /*print '<pre>';
+        print '<pre>';
         print_r($sheetData);
-        exit;*/
+        exit;
 
         foreach ($sheetData as $key => $data) {
 

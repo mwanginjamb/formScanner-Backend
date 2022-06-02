@@ -23,10 +23,10 @@ class ImportSheet extends  Model
     public function rules()
     {
         return [
-            ['workplanID', 'integer'],
+            //['workplanID', 'integer'],
             ['excel_doc', 'required'],
-            [['excel_doc'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx'],
-            [['excel_doc'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx', 'mimeTypes' => 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'message' => 'Only Spreadsheet documents are allowed.'],
+            //[['excel_doc'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx, csv'],
+            //[['excel_doc'], 'file', 'skipOnEmpty' => false,'mimeTypes' => 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv', 'message' => 'Only Spreadsheet documents are allowed.'],
         ];
     }
 
@@ -52,7 +52,7 @@ class ImportSheet extends  Model
             return 'templates\\' . $placeholderName . '.' . $this->excel_doc->extension;
         } else {
             $this->addError('excel_doc', $this->errors['excel_doc'][0]);
-            Yii::$app->session->setFlash('error', $this->errors['excel_doc'][0]);
+            Yii::$app->session->setFlash('error', $this->errors['excel_doc'][0], true);
         }
     }
 }
