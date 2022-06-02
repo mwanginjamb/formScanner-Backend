@@ -195,10 +195,10 @@ class PollingCenterController extends Controller
                     $model->caw_name = trim($data['F']);
                     $model->registration_center_code = trim($data['G']);
                     $model->registration_center_name = trim($data['H']);
-                    $model->voters_per_registration_center = trim($data['I']);
+                    $model->voters_per_registration_center = str_replace(',','',trim($data['I']));
                     $model->polling_station_code = trim($data['J']);
                     $model->polling_station_name = trim($data['K']);
-                    $model->voters_per_polling_station = trim($data['L']);
+                    $model->voters_per_polling_station = str_replace(',','',trim($data['L']));
 
 
                     if (!$model->save()) {
