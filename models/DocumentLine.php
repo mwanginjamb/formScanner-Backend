@@ -35,6 +35,7 @@ class DocumentLine extends \yii\db\ActiveRecord
     {
         return [
             [['candidate_id', 'votes', 'polling_station_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['candidate_id','polling_station_id'],'unique','targetAttribute' => ['candidate_id','polling_station_id'],'message' => 'The Votes for this candidate in that polling station have already been tallied.'],
         ];
     }
 
