@@ -226,7 +226,11 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generateOtp()
     {
-        $this->otp = Yii::$app->security->generateRandomString(5);
+        $number = time();
+        $random = rand(1535,3555);
+        $prod = ($number * $random);
+        $otp = substr($prod,0,4);
+        $this->otp = $otp;
     }
 
 

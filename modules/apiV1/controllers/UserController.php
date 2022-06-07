@@ -11,6 +11,7 @@ namespace app\modules\apiV1\controllers;
 
 use app\models\Candidate;
 use app\models\LoginForm;
+use frontend\models\OtpRequestForm;
 use Yii;
 use yii\filters\Cors;
 use yii\filters\VerbFilter;
@@ -79,6 +80,18 @@ class UserController extends Controller
         $model = new \app\modules\apiV1\models\SignupForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->signup()) {
             return $model->_user;
+        }
+
+        Yii::$app->response->statusCode = 422;
+        return [
+            'errors' => $model->errors,
+        ];
+    }
+
+    public function actionRequestOtp(){
+        $model = new OtpRequestForm();
+        if ($model->load(Yii::$app->request->post(), '') && $model->sendOtp()) {
+            return ['otp' => $model->_otp];
         }
 
         Yii::$app->response->statusCode = 422;
