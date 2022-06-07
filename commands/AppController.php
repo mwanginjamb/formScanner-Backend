@@ -47,4 +47,6 @@ class AppController extends Controller
             Console::error('User not saved');
         }
     }
+
+    
 }
