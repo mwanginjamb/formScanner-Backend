@@ -12,7 +12,7 @@ use yii\base\Model;
  */
 class OtpRequestForm extends Model
 {
-    public $email;
+    public $username;
     public $_otp;
 
 
