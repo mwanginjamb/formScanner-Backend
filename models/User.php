@@ -32,6 +32,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    public $otp;
+
 
     /**
      * {@inheritdoc}
@@ -59,6 +61,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['otp', 'safe']
         ];
     }
 
@@ -92,7 +95,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findByOtp($otp)
     {
-        return static::findOne(['opt' => $otp, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['otp' => $otp, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**

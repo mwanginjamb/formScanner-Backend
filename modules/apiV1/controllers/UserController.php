@@ -90,7 +90,7 @@ class UserController extends Controller
     public function actionRequestOtp(){
         $model = new \app\models\OtpRequestForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->sendOtp()) {
-            return ['otp' => $model->_otp];
+            return ['otp' => $model->sendOtp()];
         }
 
         Yii::$app->response->statusCode = 422;

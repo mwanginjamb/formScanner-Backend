@@ -12,7 +12,7 @@ use yii\base\Model;
  */
 class OtpRequestForm extends Model
 {
-    public $email;
+    public $username;
     public $_otp;
 
 
@@ -37,8 +37,7 @@ class OtpRequestForm extends Model
     public function sendOtp()
     {
         /* @var $user User */
-        $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
+        $user = UserOtp::findOne([
             'username' => $this->username,
         ]);
 
@@ -48,7 +47,7 @@ class OtpRequestForm extends Model
 
         if ($user) {
             $user->generateOtp();
-            if (!$user->save()) {
+            if (!$user->save(false)) {
                 return false;
             }
         }
@@ -57,7 +56,7 @@ class OtpRequestForm extends Model
         $number = $user->phone_number;
         $message = "Agent Authentication OTP: ".$user->otp."\r\n";
         Yii::$app->africasms->sendSms($number,$message);
-        return true;
+        return $user->true;
     }
 
     /**

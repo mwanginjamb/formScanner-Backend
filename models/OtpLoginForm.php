@@ -11,6 +11,9 @@ use yii\base\Model;
  */
 class OtpLoginForm extends Model
 {
+    public $username;
+    public $password;
+    public $rememberMe = true;
     public $otp;
 
     protected $_user;
@@ -23,11 +26,30 @@ class OtpLoginForm extends Model
     {
         return [
             // username and password are both required
-            [['otp'], 'required']
+            [['otp'], 'required'],
+            // rememberMe must be a boolean value
+          //  ['rememberMe', 'boolean'],
+            // password is validated by validatePassword()
+           // ['password', 'validatePassword'],
         ];
     }
 
-
+    /**
+     * Validates the password.
+     * This method serves as the inline validation for password.
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param array $params the additional name-value pairs given in the rule
+     */
+    public function validatePassword($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUser();
+            if (!$user || !$user->validatePassword($this->password)) {
+                $this->addError($attribute, 'Incorrect username or password.');
+            }
+        }
+    }
 
     /**
      * Logs in a user using the provided username and password.
@@ -48,7 +70,23 @@ class OtpLoginForm extends Model
      *
      * @return User|null
      */
+    /*  public function getUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = User::findByUsername($this->username);
+        }
 
+        return $this->_user;
+    }
+
+  public function getOtpUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = User::findByOtp($this->username);
+        }
+
+        return $this->_user;
+    }*/
 
     public function getUser()
     {
@@ -59,3 +97,4 @@ class OtpLoginForm extends Model
         return $this->_user;
     }
 }
+
