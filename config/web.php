@@ -59,6 +59,7 @@ $config = [
                         'apiV1/document',
                         'apiV1/candidate',
                         'apiV1/result',
+                        'apiV1/polling-stations',
 
                     ]
                 ]

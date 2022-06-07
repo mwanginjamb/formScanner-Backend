@@ -6,9 +6,11 @@ use app\models\ImportSheet;
 use app\models\PollingCenter;
 use app\models\PollingCenterSearch;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 
@@ -29,6 +31,17 @@ class PollingCenterController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'contentNegotiator' => [
+                    'class' => ContentNegotiator::class,
+                    'only' => [
+                        'constituency'
+                    ],
+                    'formatParam' => '_format',
+                    'formats' => [
+                        'application/json' => Response::FORMAT_JSON,
+                        //'application/xml' => Response::FORMAT_XML,
                     ],
                 ],
             ]
@@ -138,6 +151,8 @@ class PollingCenterController extends Controller
 
     public function actionExcelImport()
     {
+        // $id = \Yii::$app->session->get('LatestCount');
+        // exit($id);
         $model = new  ImportSheet();
         return $this->render('excelImport', ['model' => $model]);
     }
@@ -177,14 +192,25 @@ class PollingCenterController extends Controller
     private function saveData($sheetData)
     {
 
-//        print '<pre>';
-//        print_r($sheetData);
-//        exit;
+        // Store sheet data in a session
+        \Yii::$app->session->set('poll-data',$sheetData);
 
-        foreach ($sheetData as $key => $data) {
+        if(count(\Yii::$app->session->get('poll-data'))){
+            print_r('Done storing data.');
 
+            print '<pre>';
+            print_r(\Yii::$app->session->get('poll-data'));
+            return true;
+        }
+        exit('Did not manage to store data.');
+
+        $i = 0;
+        foreach ($sheetData as $key => $data) {         
+
+            
             // Read from 2nd row
-            if ($key >= 2) {
+            while ($key >=2) {      
+                $i++;
                 if (trim($data['C']) !== '') { // Has to have a constituency
                     $model = new PollingCenter();
                     $model->county_code = trim($data['A']);
@@ -200,22 +226,100 @@ class PollingCenterController extends Controller
                     $model->polling_station_name = trim($data['K']);
                     $model->voters_per_polling_station = str_replace(',','',trim($data['L']));
 
-
+                    //sleep(1);
                     if (!$model->save()) {
-
                         foreach ($model->errors as $k => $v) {
-                            Yii::$app->session->setFlash('error', $v[0] . ' Got value: ' . $model->$k );
+                            \Yii::$app->session->setFlash('error', $v[0] . ' Got value: ' . $model->$k );
                         }
-                    } else {
-                        Yii::$app->session->setFlash('success', 'Congratulations, all valid records are completely imported into database.');
-                    }
+                    } 
                 }
+                continue;
             }
         }
 
 
 
         return $this->redirect('index');
+    }
+
+    public function actionSaveData()
+    {
+        $sheetData = \Yii::$app->session->get('poll-data');
+        $DataLoop = new \ArrayIterator($sheetData);
+        $i = 0;
+        foreach ($DataLoop as $key => $data) {  
+            //print_r($data); exit;       
+            // Read from 2nd row
+            if($key >= 3584) {      
+                $i++;
+                if (trim($data['C']) !== '') { // Has to have a constituency
+                    $model = new PollingCenter();
+                    $model->county_code = !empty(trim($data['A']))?trim($data['A']):'';
+                    $model->county_name = !empty(trim($data['B']))?trim($data['B']):'';
+                    $model->constituency_code = !empty(trim($data['C']))?trim($data['C']):'';
+                    $model->constituency_name =  !empty(trim($data['D']))?trim($data['D']):'';
+                    $model->caw_code = !empty(trim($data['E']))?trim($data['E']):'';
+                    $model->caw_name = !empty(trim($data['F']))?trim($data['F']):'';
+                    $model->registration_center_code = !empty(trim($data['G']))?trim($data['G']):'';
+                    $model->registration_center_name = !empty(trim($data['H']))?trim($data['H']):'';
+                    $model->voters_per_registration_center = !empty(trim($data['I']))?str_replace(',','',trim($data['I'])):'';
+                    $model->polling_station_code = !empty(trim($data['J']))?trim($data['J']):'';
+                    $model->polling_station_name = !empty(trim($data['K']))?trim($data['K']):'';
+                    $model->voters_per_polling_station = !empty(trim($data['L']))?str_replace(',','',trim($data['L'])):'';
+
+                   
+                    if ($model->save()) {
+                        $success = print_r($model->errors, true);
+                        $this->logger($success,'success');
+                    } else{
+                        $errors = print_r($model->errors, true);
+                        $this->logger($errors,'error');
+                    }
+                   
+                }
+                
+            }
+            sleep(1);
+        }
+
+
+
+        return $this->redirect('index');
+    }
+
+    public function actionInspectData()
+    {
+        if(\Yii::$app->session->has('poll-data')){
+            print_r('Available Data.');
+            print '<pre>';
+            $data = print_r(\Yii::$app->session->get('poll-data'), true);
+            print_r($data);
+            return $data;
+        }else{
+            print_r('No Available Data.');
+            return true;
+        }
+    }
+
+    private function logger($message, $type)
+    {
+        if ($type == 'success') {
+            $filename = 'log/success.log';
+        } elseif ($type == 'error') {
+            $filename = 'log/error.log';
+        } 
+
+        $req_dump = print_r($message, TRUE);
+        $fp = fopen($filename, 'a');
+        fwrite($fp, $req_dump);
+        fclose($fp);
+    }
+
+
+    public function actionConstituency()
+    {
+        $data = PollingCenter::find()->select(['constituency_code','constituency_name','county_code'])->distinct()->all();
+        return $data;
     }
 
 }
