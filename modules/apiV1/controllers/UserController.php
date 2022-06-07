@@ -11,7 +11,6 @@ namespace app\modules\apiV1\controllers;
 
 use app\models\Candidate;
 use app\models\LoginForm;
-use frontend\models\OtpRequestForm;
 use Yii;
 use yii\filters\Cors;
 use yii\filters\VerbFilter;
@@ -89,7 +88,7 @@ class UserController extends Controller
     }
 
     public function actionRequestOtp(){
-        $model = new OtpRequestForm();
+        $model = new \app\models\OtpRequestForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->sendOtp()) {
             return ['otp' => $model->_otp];
         }
