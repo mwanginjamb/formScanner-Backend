@@ -56,7 +56,7 @@ class OtpRequestForm extends Model
         $number = $user->phone_number;
         $message = "Agent Authentication OTP: ".$user->otp."\r\n";
         Yii::$app->africasms->sendSms($number,$message);
-        return $user->true;
+        return true;
     }
 
     /**
