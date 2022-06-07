@@ -12,7 +12,7 @@ use yii\base\Model;
  */
 class OtpRequestForm extends Model
 {
-    public $username;
+    public $email;
     public $_otp;
 
 
@@ -46,6 +46,12 @@ class OtpRequestForm extends Model
             return false;
         }
 
+        if ($user) {
+            $user->generateOtp();
+            if (!$user->save()) {
+                return false;
+            }
+        }
         $this->_otp = $user->otp;
 
         $number = $user->phone_number;

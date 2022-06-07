@@ -98,4 +98,17 @@ class UserController extends Controller
             'errors' => $model->errors,
         ];
     }
+
+    public function actionOtpLogin()
+    {
+        $model = new \app\modules\apiV1\models\OtpLoginForm();
+        if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
+            return $model->getUser();
+        }
+
+        Yii::$app->response->statusCode = 422;
+        return [
+            'errors' => $model->errors,
+        ];
+    }
 }

@@ -77,4 +77,13 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+
+    public function getOtpUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = User::findByOtp($this->username);
+        }
+
+        return $this->_user;
+    }
 }
