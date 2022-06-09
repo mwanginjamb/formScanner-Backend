@@ -68,6 +68,12 @@ $config = [
         'africasms' => [
             'class' => 'app\helpers\Sms_Sender',
         ],
+        'sharepoint' => [
+            'class' => 'app\helpers\Sharepoint',
+        ],
+        'utilities' => [
+            'class' => 'app\helpers\Utilities',
+        ],
     ],
     'params' => $params,
     'modules' => [
