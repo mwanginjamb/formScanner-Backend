@@ -60,6 +60,8 @@ $config = [
                         'apiV1/candidate',
                         'apiV1/result',
                         'apiV1/polling-stations',
+                        'apiV1/county',
+                        'apiV1/sub-county',
 
                     ]
                 ]
