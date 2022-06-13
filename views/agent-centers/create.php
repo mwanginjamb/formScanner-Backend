@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\AgentCenters */
 
-$this->title = 'Create Agent Centers';
+$this->title = 'Assign Polling Station to Agent';
 $this->params['breadcrumbs'][] = ['label' => 'Agent Centers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,6 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'agents' => $agents,
+        'polling_stations' => $polling_stations
     ]) ?>
 
 </div>

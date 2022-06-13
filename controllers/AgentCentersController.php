@@ -4,9 +4,13 @@ namespace app\controllers;
 
 use app\models\AgentCenters;
 use app\models\AgentCentersSearch;
+use app\models\PollingCenter;
+use app\models\User;
+use app\modules\apiV1\resources\UserResource;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * AgentCentersController implements the CRUD actions for AgentCenters model.
@@ -79,6 +83,11 @@ class AgentCentersController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'agents' => ArrayHelper::map(UserResource::find()->all(),'id', 'full_names'),
+            'polling_stations' => ArrayHelper::map(PollingCenter::find()
+            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station','id'])
+            ->asArray()
+            ->all(),'id','station')
         ]);
     }
 
@@ -99,6 +108,11 @@ class AgentCentersController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'agents' => ArrayHelper::map(UserResource::find()->all(),'id', 'full_names'),
+            'polling_stations' => ArrayHelper::map(PollingCenter::find()
+            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station','id'])
+            ->asArray()
+            ->all(),'id','station')
         ]);
     }
 
@@ -131,4 +145,6 @@ class AgentCentersController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    
 }

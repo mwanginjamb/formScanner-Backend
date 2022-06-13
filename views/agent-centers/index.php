@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\AgentCentersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Agent Centers', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -29,8 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'agent_id',
+           // 'id',
+          //  'agent_id',
+            [
+                'label' => 'Agent',
+                'value' => function($model) {
+                    return $model->user->full_names;
+                }
+            ],
+            'center.polling_station_name',
             'center_id',
             'created_at',
             'updated_at',
@@ -38,13 +44,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_by',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, AgentCenters $model, $key, $index, $column) {
+                'urlCreator' => function ($action, \app\models\AgentCenters $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
         ],
     ]); ?>
 
-    <?php Pjax::end(); ?>
 
 </div>
