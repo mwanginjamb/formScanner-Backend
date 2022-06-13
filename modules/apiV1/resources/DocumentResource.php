@@ -17,7 +17,7 @@ class DocumentResource extends Documents
  public function fields()
  {
      return [
-         'id','description','local_file_path','polling_station','created_at','lines'
+         'id','description','coordinates','local_file_path','polling_station','created_at','lines'
      ];
  }
 }

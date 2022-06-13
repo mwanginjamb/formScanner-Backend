@@ -120,6 +120,7 @@ class SiteController extends Controller
         if($data && !empty($data->ImageBinary)){
 
             $model = Documents::findOne(['id' => $data->id]);
+            $model->coordinates = $data->coordinates;
             /*Process Media for Saving*/
             $bin = base64_decode($data->ImageBinary);
             $size = getImageSizeFromString($bin);
@@ -130,7 +131,7 @@ class SiteController extends Controller
             //Upload to sharepoint
 
             $LibraryParts = $this->getLibraryParts($model->polling_station);
-            Yii::$app->sharepoint->sharepoint_attach(Url::home(true).$img_file, $LibraryParts);
+            //Yii::$app->sharepoint->sharepoint_attach(Url::home(true).$img_file, $LibraryParts);
 
             // Create a record in Docs Table
             $model->local_file_path = Url::home(true).$img_file;

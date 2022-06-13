@@ -45,7 +45,7 @@ class Documents extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['results'], 'string'],
+            [['results','coordinates'], 'string'],
             [['created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string', 'max' => 150],
             [['polling_station'], 'string', 'max' => 50],
