@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use app\modules\apiV1\resources\UserResource;
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "agent_centers".
@@ -17,6 +20,7 @@ use Yii;
  */
 class AgentCenters extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -25,6 +29,17 @@ class AgentCenters extends \yii\db\ActiveRecord
         return 'agent_centers';
     }
 
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            BlameableBehavior::class
+        ];
+    }
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +47,8 @@ class AgentCenters extends \yii\db\ActiveRecord
     {
         return [
             [['agent_id', 'center_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['agent_id', 'center_id',],'required'],
+            [['agent_id', 'center_id',],'unique']
         ];
     }
 
@@ -53,10 +70,20 @@ class AgentCenters extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \app\models\queries\AgentCentersQuery the active query used by this AR class.
+     * @return \app\models\query\AgentCentersQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\queries\AgentCentersQuery(get_called_class());
+        return new \app\models\query\AgentCentersQuery(get_called_class());
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(UserResource::class,['id' => 'agent_id']);
+    }
+
+    public function getCenter()
+    {
+        return $this->hasOne(PollingCenter::class,['id' => 'center_id']);
     }
 }

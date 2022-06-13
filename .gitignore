@@ -38,3 +38,5 @@ env
 /templates
 
 *.png
+*.jpeg
+*.jpg

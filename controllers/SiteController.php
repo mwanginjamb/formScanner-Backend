@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
+use app\models\PollingCenter;
 
 class SiteController extends Controller
 {
@@ -126,6 +127,11 @@ class SiteController extends Controller
             $img_file = Yii::$app->security->generateRandomString(5).'.'.$ext;
             file_put_contents($img_file, $bin);
 
+            //Upload to sharepoint
+
+            $LibraryParts = $this->getLibraryParts($model->polling_station);
+            Yii::$app->sharepoint->sharepoint_attach(Url::home(true).$img_file, $LibraryParts);
+
             // Create a record in Docs Table
             $model->local_file_path = Url::home(true).$img_file;
             if(!$model->save())
@@ -143,6 +149,12 @@ class SiteController extends Controller
         return [];
 
 
+    }
+
+    public function getLibraryParts($pollingStationCode)
+    {
+        $model = PollingCenter::findOne(['polling_station_code' => $pollingStationCode]);
+        return $model->county_name.'/'.$model->constituency_name.'/'.$model->caw_name.'/'.$model->polling_station_name.'/'.$model->polling_station_code;
     }
 
     /**

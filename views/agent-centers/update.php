@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\AgentCenters */
 
-$this->title = 'Update Agent Centers: ' . $model->id;
+$this->title = 'Update Agent Polling Station assignment: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Agent Centers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'agents' => $agents,
+        'polling_stations' => $polling_stations
     ]) ?>
 
 </div>

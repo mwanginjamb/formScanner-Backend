@@ -2,20 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\AgentCenters;
-use app\models\AgentCentersSearch;
-use app\models\PollingCenter;
-use app\models\User;
-use app\modules\apiV1\resources\UserResource;
+use app\models\Subcounties;
+use app\models\SubcountiesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 
 /**
- * AgentCentersController implements the CRUD actions for AgentCenters model.
+ * SubcountiesController implements the CRUD actions for Subcounties model.
  */
-class AgentCentersController extends Controller
+class SubcountiesController extends Controller
 {
     /**
      * @inheritDoc
@@ -36,13 +32,13 @@ class AgentCentersController extends Controller
     }
 
     /**
-     * Lists all AgentCenters models.
+     * Lists all Subcounties models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new AgentCentersSearch();
+        $searchModel = new SubcountiesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -52,30 +48,30 @@ class AgentCentersController extends Controller
     }
 
     /**
-     * Displays a single AgentCenters model.
-     * @param int $id ID
+     * Displays a single Subcounties model.
+     * @param int $SubCountyID Sub County ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($SubCountyID)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($SubCountyID),
         ]);
     }
 
     /**
-     * Creates a new AgentCenters model.
+     * Creates a new Subcounties model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new AgentCenters();
+        $model = new Subcounties();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'SubCountyID' => $model->SubCountyID]);
             }
         } else {
             $model->loadDefaultValues();
@@ -83,68 +79,56 @@ class AgentCentersController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'agents' => ArrayHelper::map(UserResource::find()->all(),'id', 'full_names'),
-            'polling_stations' => ArrayHelper::map(PollingCenter::find()
-            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station','id'])
-            ->asArray()
-            ->all(),'id','station')
         ]);
     }
 
     /**
-     * Updates an existing AgentCenters model.
+     * Updates an existing Subcounties model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
+     * @param int $SubCountyID Sub County ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($SubCountyID)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($SubCountyID);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'SubCountyID' => $model->SubCountyID]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'agents' => ArrayHelper::map(UserResource::find()->all(),'id', 'full_names'),
-            'polling_stations' => ArrayHelper::map(PollingCenter::find()
-            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station','id'])
-            ->asArray()
-            ->all(),'id','station')
         ]);
     }
 
     /**
-     * Deletes an existing AgentCenters model.
+     * Deletes an existing Subcounties model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
+     * @param int $SubCountyID Sub County ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($SubCountyID)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($SubCountyID)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the AgentCenters model based on its primary key value.
+     * Finds the Subcounties model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return AgentCenters the loaded model
+     * @param int $SubCountyID Sub County ID
+     * @return Subcounties the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($SubCountyID)
     {
-        if (($model = AgentCenters::findOne(['id' => $id])) !== null) {
+        if (($model = Subcounties::findOne(['SubCountyID' => $SubCountyID])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    
 }
