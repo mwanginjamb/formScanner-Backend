@@ -236,6 +236,11 @@ class User extends ActiveRecord implements IdentityInterface
         $this->otp = $otp;
     }
 
+    public function getStation()
+    {
+        return $this->hasOne(AgentCenters::className(),['agent_id' => 'id']);
+    }
+
 
 
 }

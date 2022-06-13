@@ -19,4 +19,11 @@ class UserResource extends User
          'id','username','email','access_token','phone_number','otp','full_names'
      ];
  }
+
+ public function extraFields()
+ {
+     return ['station'];
+ }
+
+
 }
