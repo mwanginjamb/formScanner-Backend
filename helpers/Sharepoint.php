@@ -53,7 +53,8 @@ class Sharepoint extends Component
                 Yii::$app->params['clientID'],
                 Yii::$app->params['clientSecret']
             );*/
-            $ctx = $this->connectWithUserCredentials(Yii::$app->params['sharepointUrl'], Yii::$app->params['sharepointUsername'], Yii::$app->params['sharepointPassword']);
+            $ctx = $this->connectWithUserToken(Yii::$app->params['sharepointUrl'], Yii::$app->params['sharepointUsername'], Yii::$app->params['sharepointPassword']);
+    
             $site = $ctx->getSite();
 
 
@@ -202,6 +203,15 @@ class Sharepoint extends Component
     {
         $authCtx = new AuthenticationContext($url);
         $authCtx->acquireAppOnlyAccessToken($clientId, $clientSecret);
+        $ctx = new ClientContext($url, $authCtx);
+        return $ctx;
+    }
+
+
+    function connectWithUserToken($url,$username, $password)
+    {
+        $authCtx = new AuthenticationContext($url);
+        $authCtx->acquireTokenForUser($username, $password);
         $ctx = new ClientContext($url, $authCtx);
         return $ctx;
     }

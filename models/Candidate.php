@@ -46,6 +46,7 @@ class Candidate extends \yii\db\ActiveRecord
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name'], 'string', 'max' => 250],
             ['name', 'unique','message' => 'This candidate is already registered.'],
+            ['candidate_code','string']
         ];
     }
 
@@ -61,6 +62,7 @@ class Candidate extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
+            'candidate_code' => 'Candidate Code'
         ];
     }
 

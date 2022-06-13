@@ -14,6 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'countable')->checkbox([$model->countable]) ?>
+    <?= $form->field($model, 'candidate_code')->textInput([]) ?>
 
     <?php $form->field($model, 'created_at')->textInput() ?>
 
