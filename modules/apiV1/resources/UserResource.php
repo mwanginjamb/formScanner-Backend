@@ -22,7 +22,7 @@ class UserResource extends User
 
  public function extraFields()
  {
-     return ['station'];
+     return ['station','poll'];
  }
 
 

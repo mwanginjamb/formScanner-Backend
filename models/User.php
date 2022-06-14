@@ -241,6 +241,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(AgentCenters::className(),['agent_id' => 'id']);
     }
 
+    public function getPoll()
+    {
+        return $this->station->center;
+    }
+
 
 
 }

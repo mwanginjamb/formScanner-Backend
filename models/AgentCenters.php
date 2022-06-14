@@ -86,4 +86,6 @@ class AgentCenters extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PollingCenter::class,['id' => 'center_id']);
     }
+
+
 }
