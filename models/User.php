@@ -243,7 +243,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getPoll()
     {
-        return $this->station->center;
+        return $this->station->center ?? null;
     }
 
 
