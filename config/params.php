@@ -8,5 +8,7 @@ return [
     'library' =>  env('SP_LIBRARY'),
     'sharepointUrl' => env('SP_URL'),
     'sharepointUsername' => env('SP_USERNAME'),
-    'sharepointPassword' => env('SP_PASSWORD')
+    'sharepointPassword' => env('SP_PASSWORD'),
+    'clientID' => 'api://0cc921e1-a4c1-4562-873e-3cc40259cd6b', // SP App Client ID
+    'clientSecret' => 'jm88Q~.2_2PwKWDwKDvHPvObc0JrSuiZDFsGHdmd', // SP Client Secret
 ];

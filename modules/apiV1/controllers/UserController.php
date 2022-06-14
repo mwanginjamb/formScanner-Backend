@@ -11,6 +11,7 @@ namespace app\modules\apiV1\controllers;
 
 use app\models\Candidate;
 use app\models\LoginForm;
+use app\models\Summaryviewall;
 use Yii;
 use yii\filters\Cors;
 use yii\filters\VerbFilter;
@@ -79,6 +80,22 @@ class UserController extends Controller
         $model = new \app\modules\apiV1\models\SignupForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->signup()) {
             return $model->_user;
+        }
+
+        Yii::$app->response->statusCode = 422;
+        return [
+            'errors' => $model->errors,
+        ];
+    }
+
+    // Agent SUmmary
+
+    public function actionAgent()
+    {
+
+        $model = new Summaryviewall();
+        if ($model->load(Yii::$app->request->post(), '') && $model->fetch()) {
+            return $model->_summary;
         }
 
         Yii::$app->response->statusCode = 422;

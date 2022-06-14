@@ -15,6 +15,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
 use app\models\PollingCenter;
+use app\models\Summaryviewall;
 
 class SiteController extends Controller
 {
@@ -131,7 +132,7 @@ class SiteController extends Controller
             //Upload to sharepoint
 
             $LibraryParts = $this->getLibraryParts($model->polling_station);
-            //Yii::$app->sharepoint->sharepoint_attach(Url::home(true).$img_file, $LibraryParts);
+            Yii::$app->sharepoint->sharepoint_attach(Url::home(true).$img_file, $LibraryParts);
 
             // Create a record in Docs Table
             $model->local_file_path = Url::home(true).$img_file;
@@ -189,6 +190,8 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    
 
     /**
      * Logout action.
