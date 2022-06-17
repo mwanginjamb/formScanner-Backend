@@ -8,8 +8,9 @@
 
 namespace app\modules\apiV1\resources;
 
-
+use app\models\Summaryviewall;
 use app\models\User;
+use app\models\UserOtp;
 
 class UserResource extends User
 {
@@ -24,6 +25,7 @@ class UserResource extends User
  {
      return ['station','poll'];
  }
+
 
 
 }

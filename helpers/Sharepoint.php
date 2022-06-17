@@ -34,41 +34,32 @@ class Sharepoint extends Component
     }
 
 
-  
+
 
     //SHAREPOINT UPLOAD
     public function sharepoint_attach($filepath, $libraryParts = '')
     {  //read list
 
-        if($libraryParts){
-            $targetLibraryTitle = \Yii::$app->params['library'].'/'.$libraryParts;
-        }else{
-            $targetLibraryTitle = \Yii::$app->params['library'];
+        if ($libraryParts) {
+            $targetLibraryTitle = "/sites/DMS/" . env('SP_LIBRARY') . '/' . $libraryParts . '/' . basename($filepath);
+        } else {
+            $targetLibraryTitle = env('RSP_LIBRARY');
         }
 
+
         try {
-
-            /*$ctx = $this->connectWithAppOnlyToken(
-                Yii::$app->params['sharepointUrl'],
-                Yii::$app->params['clientID'],
-                Yii::$app->params['clientSecret']
-            );*/
-            //$ctx = $this->connectWithUserToken(Yii::$app->params['sharepointUrl'], Yii::$app->params['sharepointUsername'], Yii::$app->params['sharepointPassword']);
-           // $ctx = $this->connectWithUserCredentials(Yii::$app->params['sharepointUrl'], Yii::$app->params['sharepointUsername'], Yii::$app->params['sharepointPassword']);
-            $ctx = $this->connectWithAppOnlyToken(Yii::$app->params['sharepointUrl'],Yii::$app->params['clientID'],Yii::$app->params['clientSecret']);
-    
-            $site = $ctx->getSite();
-
-
-            $ctx->load($site); //load site settings
-            $ctx->executeQuery();
-
-            $list = $this->ensureList($ctx->getWeb(), $targetLibraryTitle, ListTemplateType::DocumentLibrary);
-
-
             $localFilePath = realpath($filepath);
-            // Yii::$app->recruitment->printrr($localFilePath);
-            $this->uploadFiles($localFilePath, $list);
+            $credentials = new UserCredentials(Yii::$app->params['sharepointUsername'], Yii::$app->params['sharepointPassword']);
+            $ctx = (new ClientContext(Yii::$app->params['sharepointUrl']))->withCredentials($credentials);
+
+            $fileCreationInformation = new FileCreationInformation();
+            $fileCreationInformation->Content = file_get_contents($localFilePath);
+            $fileCreationInformation->Url = basename($localFilePath);
+            $uploadFile = $ctx->getWeb()
+                ->getFolderByServerRelativeUrl(dirname($targetLibraryTitle))
+                ->getFiles()
+                ->add($fileCreationInformation);
+            $ctx->executeQuery();
         } catch (\Exception $e) {
             print 'Authentication failed: ' . $e->getMessage() . "\n";
         }
@@ -102,7 +93,6 @@ class Sharepoint extends Component
         $fileCreationInformation->Url = basename($localFilePath);
 
         //print_r($fileCreationInformation); exit;
-
         $uploadFile = $targetList->getRootFolder()->getFiles()->add($fileCreationInformation);
         $ctx->executeQuery();
         // print "File {$uploadFile->getProperty('Name')} has been uploaded\r\n";
@@ -210,7 +200,7 @@ class Sharepoint extends Component
     }
 
 
-    function connectWithUserToken($url,$username, $password)
+    function connectWithUserToken($url, $username, $password)
     {
         $authCtx = new AuthenticationContext($url);
         $authCtx->acquireTokenForUser($username, $password);

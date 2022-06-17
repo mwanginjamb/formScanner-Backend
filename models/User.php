@@ -33,7 +33,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
     public $otp;
-
+    public $phone_number;
 
     /**
      * {@inheritdoc}
@@ -126,6 +126,14 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne([
             'verification_token' => $token,
             'status' => self::STATUS_INACTIVE
+        ]);
+    }
+
+    public static function findByPhone($number)
+    {
+       return static::findOne([
+            'phone_number' => $number,
+            'status' => self::STATUS_ACTIVE,
         ]);
     }
 

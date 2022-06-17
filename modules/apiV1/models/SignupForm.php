@@ -17,6 +17,7 @@ class SignupForm extends Model
     public $password;
     public $password_confirm;
     public $phone_number;
+    public $full_names;
 
     public $_user;
 
@@ -29,7 +30,7 @@ class SignupForm extends Model
         return [
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This user ID has already been taken.'],
+            ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This National ID has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'trim'],
@@ -46,6 +47,9 @@ class SignupForm extends Model
             ['phone_number', 'required'],
             ['phone_number', 'string', 'max' => 10],
             ['phone_number', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This Phone Number has already been taken.'],
+
+            ['full_names', 'required'],
+            ['full_names', 'string', 'max' => '150']
 
         ];
     }
@@ -71,6 +75,7 @@ class SignupForm extends Model
         $this->_user->access_token = \Yii::$app->security->generateRandomString(255);
         $this->_user->status = 10;
         $this->_user->phone_number = $this->phone_number;
+        $this->full_names = $this->full_names;
 
         if($this->_user->save() && $this->sendSms($this->_user)){
             return true;

@@ -12,6 +12,8 @@ namespace app\modules\apiV1\controllers;
 use app\models\Candidate;
 use app\models\LoginForm;
 use app\models\Summaryviewall;
+use app\models\User;
+use app\modules\apiV1\resources\UserResource;
 use Yii;
 use yii\filters\Cors;
 use yii\filters\VerbFilter;
@@ -94,8 +96,9 @@ class UserController extends Controller
     {
 
         $model = new Summaryviewall();
-        if ($model->load(Yii::$app->request->post(), '') && $model->fetch()) {
-            return $model->_summary;
+        if ($model->load(Yii::$app->request->post(), '') ) {
+            return User::findByPhone($model->phone_number)->station;
+           // return $model->_summary;
         }
 
         Yii::$app->response->statusCode = 422;

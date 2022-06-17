@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\apiV1\resources\UserResource;
 use Yii;
 
 /**
@@ -65,7 +66,8 @@ class Summaryviewall extends \yii\db\ActiveRecord
         $model = parent::find(['phone_number' =>  $this->phone_number])->one();
         if($model)
         {
-            return $this->_summary = $model;
+            $this->_summary = $model;
+            return $this->_summary;
         }
 
         return false ;
