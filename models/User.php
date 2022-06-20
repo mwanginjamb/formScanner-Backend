@@ -33,7 +33,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
     public $otp;
-    public $phone_number;
+    // public $phone_number;
+    // public $full_names;
 
     /**
      * {@inheritdoc}
@@ -61,7 +62,9 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            ['otp', 'safe']
+            ['otp', 'safe'],
+            ['full_names', 'string', 'max' => '150'],
+            ['phone_number', 'safe']
         ];
     }
 
@@ -78,7 +81,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-       // throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        // throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
         return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
@@ -122,7 +125,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token verify email token
      * @return static|null
      */
-    public static function findByVerificationToken($token) {
+    public static function findByVerificationToken($token)
+    {
         return static::findOne([
             'verification_token' => $token,
             'status' => self::STATUS_INACTIVE
@@ -131,7 +135,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findByPhone($number)
     {
-       return static::findOne([
+        return static::findOne([
             'phone_number' => $number,
             'status' => self::STATUS_ACTIVE,
         ]);
@@ -238,22 +242,19 @@ class User extends ActiveRecord implements IdentityInterface
     public function generateOtp()
     {
         $number = time();
-        $random = rand(1535,3555);
+        $random = rand(1535, 3555);
         $prod = ($number * $random);
-        $otp = substr($prod,0,4);
+        $otp = substr($prod, 0, 4);
         $this->otp = $otp;
     }
 
     public function getStation()
     {
-        return $this->hasOne(AgentCenters::className(),['agent_id' => 'id']);
+        return $this->hasOne(AgentCenters::className(), ['agent_id' => 'id']);
     }
 
     public function getPoll()
     {
         return $this->station->center ?? null;
     }
-
-
-
 }

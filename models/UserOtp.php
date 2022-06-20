@@ -7,6 +7,8 @@ use Yii;
 
 class UserOtp extends \yii\db\ActiveRecord
 {
+
+    protected $otp;
     /**
      * {@inheritdoc}
      */
@@ -22,7 +24,11 @@ class UserOtp extends \yii\db\ActiveRecord
     {
         return [
             [['otp'], 'integer'],
-           
+            ['full_names', 'string', 'max' => '150'],
+            ['phone_number', 'string'],
+            ['username', 'string', 'min' => 2, 'max' => 255],
+
+
         ];
     }
 
@@ -31,26 +37,20 @@ class UserOtp extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
-            
-        ];
+        return [];
     }
 
 
-    
+
     /**
      * Generates OTP
      */
     public function generateOtp()
     {
         $number = time();
-        $random = rand(1535,3555);
+        $random = rand(1535, 3555);
         $prod = ($number * $random);
-        $otp = substr($prod,0,4);
+        $otp = substr($prod, 0, 4);
         $this->otp = $otp;
     }
-
-
-
-
 }

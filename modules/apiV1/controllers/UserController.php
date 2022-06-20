@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HP ELITEBOOK 840 G5
@@ -61,7 +62,7 @@ class UserController extends Controller
 
     public function actionLogin()
     {
-       /* if (!Yii::$app->user->isGuest) {
+        /* if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }*/
 
@@ -96,9 +97,9 @@ class UserController extends Controller
     {
 
         $model = new Summaryviewall();
-        if ($model->load(Yii::$app->request->post(), '') ) {
-            return User::findByPhone($model->phone_number)->station;
-           // return $model->_summary;
+        if ($model->load(Yii::$app->request->post(), '') && $model->fetch()) {
+            //return User::findByPhone($model->phone_number)->station;
+            return $model->_summary;
         }
 
         Yii::$app->response->statusCode = 422;
@@ -107,7 +108,15 @@ class UserController extends Controller
         ];
     }
 
-    public function actionRequestOtp(){
+    public function actionAgents()
+    {
+        //$model = new Summaryviewall();
+        $agents = Summaryviewall::find()->all();
+        return $agents;
+    }
+
+    public function actionRequestOtp()
+    {
         $model = new \app\models\OtpRequestForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->sendOtp()) {
             return ['otp' => $model->_otp];
@@ -135,12 +144,10 @@ class UserController extends Controller
     public function actionClient()
     {
         print_r(file_get_contents('php://input'));
-
     }
 
     public function actionIncident()
     {
         print_r(file_get_contents('php://input'));
-
     }
 }

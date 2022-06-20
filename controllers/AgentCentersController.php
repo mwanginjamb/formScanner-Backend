@@ -44,6 +44,10 @@ class AgentCentersController extends Controller
     {
         $searchModel = new AgentCentersSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $users = ArrayHelper::map(UserResource::find()->all(), 'id', 'full_names');
+        /*print '<pre>';
+        print_r($users);
+        exit;*/
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -83,11 +87,11 @@ class AgentCentersController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'agents' => ArrayHelper::map(UserResource::find()->all(),'id', 'full_names'),
+            'agents' => ArrayHelper::map(UserResource::find()->all(), 'id', 'full_names'),
             'polling_stations' => ArrayHelper::map(PollingCenter::find()
-            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station','id'])
-            ->asArray()
-            ->all(),'id','station')
+                ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id'])
+                ->asArray()
+                ->all(), 'id', 'station')
         ]);
     }
 
@@ -108,11 +112,11 @@ class AgentCentersController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'agents' => ArrayHelper::map(UserResource::find()->all(),'id', 'full_names'),
+            'agents' => ArrayHelper::map(UserResource::find()->all(), 'id', 'full_names'),
             'polling_stations' => ArrayHelper::map(PollingCenter::find()
-            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station','id'])
-            ->asArray()
-            ->all(),'id','station')
+                ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id'])
+                ->asArray()
+                ->all(), 'id', 'station')
         ]);
     }
 
@@ -145,6 +149,4 @@ class AgentCentersController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    
 }

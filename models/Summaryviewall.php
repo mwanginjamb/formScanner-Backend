@@ -63,14 +63,13 @@ class Summaryviewall extends \yii\db\ActiveRecord
 
     public function fetch()
     {
-        $model = parent::find(['phone_number' =>  $this->phone_number])->one();
-        if($model)
-        {
+        $model = parent::find()->where(['phone_number' =>  $this->phone_number])->one();
+        if ($model) {
             $this->_summary = $model;
             return $this->_summary;
         }
 
-        return false ;
+        return false;
     }
 
     /**
