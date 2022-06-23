@@ -45,13 +45,13 @@ class Documents extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['results','coordinates'], 'string'],
+            [['results', 'coordinates'], 'string'],
             [['created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string', 'max' => 150],
             [['polling_station'], 'string', 'max' => 50],
             [['local_file_path', 'sharepoint_path'], 'string', 'max' => 250],
             [['polling_station'], 'unique', 'message' => 'Votes for this center have already been tallied.'],
-           // [['description','polling_station'], 'required'],
+            // [['description','polling_station'], 'required'],
             //[['description'],'unique']
         ];
     }
@@ -86,6 +86,19 @@ class Documents extends \yii\db\ActiveRecord
 
     public function getLines()
     {
-        return $this->hasMany(DocumentLineResource::class,['polling_station_id' => 'polling_station']);
+        return $this->hasMany(DocumentLineResource::class, ['polling_station_id' => 'polling_station']);
+    }
+
+    public function getStation()
+    {
+        return $this->hasOne(PollingCenter::class, ['polling_station_code' => 'polling_station']);
+    }
+
+    public function getContent()
+    {
+        if ($this->sharepoint_path) {
+            return Yii::$app->sharepoint->download($this->sharepoint_path) ?? null;
+        }
+        return null;
     }
 }

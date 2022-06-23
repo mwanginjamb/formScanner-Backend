@@ -119,9 +119,12 @@ class Sharepoint extends Component
     {
         try {
             $fileContent = \Office365\sharePoint\File::openBinary($ctx, $fileUrl);
-            return "data:application/pdf;base64," . base64_encode($fileContent);
+            $base64 = base64_encode($fileContent);
+            $size = getImageSizeFromString($fileContent);
+            $mime = $size['mime'];
+            return "data:" . $mime . ";base64," . $base64;
         } catch (\Exception $e) {
-
+            return false;
             echo $e->getMessage();
         }
     }

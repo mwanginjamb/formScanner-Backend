@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HP ELITEBOOK 840 G5
@@ -14,10 +15,15 @@ use app\models\Documents;
 
 class DocumentResource extends Documents
 {
- public function fields()
- {
-     return [
-         'id','description','coordinates','local_file_path','sharepoint_path','polling_station','created_at','lines'
-     ];
- }
+    public function fields()
+    {
+        return [
+            'id', 'description', 'coordinates', 'local_file_path', 'sharepoint_path', 'polling_station', 'created_at', 'lines', 'station'
+        ];
+    }
+
+    public function extraFields()
+    {
+        return ['content'];
+    }
 }
