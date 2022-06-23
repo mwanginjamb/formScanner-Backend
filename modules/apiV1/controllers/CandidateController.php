@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HP ELITEBOOK 840 G5
@@ -10,6 +11,7 @@ namespace app\modules\apiV1\controllers;
 
 
 use app\models\Candidate;
+use yii\base\DynamicModel;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
@@ -40,6 +42,24 @@ class CandidateController extends ActiveController
         ];
 
         return $behaviours;
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+
+        $actions['index']['dataFilter'] = [
+            'class' => \yii\data\ActiveDataFilter::class,
+            'attributeMap' => [
+                'level' => 'result_level_id',
+                'constituency' => 'constituency_code'
+            ],
+            'searchModel' => (new DynamicModel(['level', 'constituency']))
+                ->addRule(['level'], 'integer', ['min' => 1])
+                ->addRule(['constituency'], 'string', ['length' => [2, 9]])
+        ];
+
+        return $actions;
     }
 
     protected function verbs()
