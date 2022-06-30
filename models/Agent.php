@@ -18,7 +18,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $created_by
  * @property int|null $updated_by
  */
-class AgentCenters extends \yii\db\ActiveRecord
+class Agent extends \yii\db\ActiveRecord
 {
 
     /**

@@ -73,7 +73,7 @@ class AgentCenters extends \yii\db\ActiveRecord
     {
         return [
             [['agent_id', 'center_id', 'created_at', 'updated_at', 'created_by', 'updated_by', 'result_level_id'], 'integer'],
-            [['agent_id', 'center_id', 'county', 'constituency', 'ward', 'center'], 'required'],
+            [['agent_id', 'center_id', 'county', 'constituency', 'ward'], 'required'],
             [['agent_id', 'center_id',], 'unique'],
 
         ];
@@ -92,6 +92,7 @@ class AgentCenters extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
+            'result_level_id' => 'Results Level'
         ];
     }
 
@@ -113,6 +114,8 @@ class AgentCenters extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PollingCenter::class, ['id' => 'center_id']);
     }
+
+
 
     public function getLevel()
     {

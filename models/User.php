@@ -255,6 +255,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getPoll()
     {
-        return $this->station->center ?? null;
+        $centerID = $this->station->center_id;
+        return PollingCenter::find()->where(['id' => $centerID])->one();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\AgentCenters */
@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->errorSummary($model) ?>
     <div class="row">
         <div class="col-md-6">
 
@@ -50,6 +51,7 @@ use yii\widgets\ActiveForm;
                 '
             ]) ?>
             <?= $form->field($model, 'center_id')->dropDownList($polling_stations, ['prompt' => 'Select Polling Station ...']) ?>
+            <?= $form->field($model, 'result_level_id')->dropDownList($levels, ['prompt' => 'Select  ...']) ?>
 
         </div>
     </div>

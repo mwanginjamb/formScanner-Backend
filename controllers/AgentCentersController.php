@@ -6,12 +6,16 @@ use app\models\AgentCenters;
 use app\models\AgentCentersSearch;
 use app\models\Counties;
 use app\models\PollingCenter;
+use app\models\ResultsLevel;
 use app\models\User;
 use app\modules\apiV1\resources\UserResource;
+use yii\bootstrap4\Html;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\Response;
 
 /**
  * AgentCentersController implements the CRUD actions for AgentCenters model.
@@ -32,6 +36,17 @@ class AgentCentersController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'contentNegotiator' => [
+                    'class' => ContentNegotiator::class,
+                    'only' => [
+                        'constituency', 'list'
+                    ],
+                    'formatParam' => '_format',
+                    'formats' => [
+                        'application/json' => Response::FORMAT_JSON,
+                        //'application/xml' => Response::FORMAT_XML,
+                    ],
+                ],
             ]
         );
     }
@@ -46,14 +61,49 @@ class AgentCentersController extends Controller
         $searchModel = new AgentCentersSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         $users = ArrayHelper::map(UserResource::find()->all(), 'id', 'full_names');
-        /*print '<pre>';
-        print_r($users);
+        /* $assignment = AgentCenters::find()->with('center')->all();
+        print '<pre>';
+        print_r($assignment[0]);
         exit;*/
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionList()
+    {
+        $assignment = AgentCenters::find()->with('center')->with('user')->with('level')->asArray()->all();
+
+        //\Yii::$app->utilities->printrr($assignment);
+
+        foreach ($assignment as $a) {
+            $update = Html::a('<i class="fa fa-edit"></i>', ['update', 'id' => $a['id']], ['class' => 'mx-1']);
+
+            $delete = Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $a['id']], [
+                'class' => 'bg-danger',
+                'title' => 'Delete assignment',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this assignment?',
+                    'method' => 'post',
+                ],
+            ]);
+
+            $result['data'][] = [
+                'username' => $a['user']['full_names'] ?? '',
+                'phone_number' => $a['user']['phone_number'] ?? '',
+                'county' =>  $a['center']['county_name'] ?? '',
+                'Ward' =>  $a['center']['caw_name'] ?? '',
+                'constituency' => $a['center']['constituency_name'] ?? '',
+                'center' => $a['center']['registration_center_name'] ?? '',
+                'polling_station_code' => $a['center']['polling_station_code'] ?? '',
+                'level' => $a['level']['description'] ?? '',
+                'actions' => $update . $delete
+            ];
+        }
+
+        return $result;
     }
 
     /**
@@ -77,7 +127,7 @@ class AgentCentersController extends Controller
     public function actionCreate()
     {
         $model = new AgentCenters();
-
+        $model->scenario = 'scenariocreate';
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -90,7 +140,7 @@ class AgentCentersController extends Controller
         $constituencies = PollingCenter::find()->select(['constituency_code', 'constituency_name', 'county_code'])->distinct()->asArray()->all();
         $wards = PollingCenter::find()->select(['caw_code', 'caw_name'])->distinct()->asArray()->all();
         $centers = PollingCenter::find()->select(['registration_center_code', 'registration_center_name'])->distinct()->where(['<>', 'registration_center_name', ''])->asArray()->all();
-
+        $resultLevel = ResultsLevel::find()->all();
         // \Yii::$app->utilities->printrr($centers);
         return $this->render('create', [
             'model' => $model,
@@ -99,7 +149,8 @@ class AgentCentersController extends Controller
             'counties' => ArrayHelper::map($counties, 'CountyID', 'CountyName'),
             'constituencies' => ArrayHelper::map($constituencies, 'constituency_code', 'constituency_name'),
             'wards' => ArrayHelper::map($wards, 'caw_code', 'caw_name'),
-            'centers' => ArrayHelper::map($centers, 'registration_center_code', 'registration_center_name')
+            'centers' => ArrayHelper::map($centers, 'registration_center_code', 'registration_center_name'),
+            'levels' => ArrayHelper::map($resultLevel, 'level', 'description'),
         ]);
     }
 
@@ -119,15 +170,15 @@ class AgentCentersController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = 'scenarioupdate';
-        // \Yii::$app->utilities->printrr($model);
+        //\Yii::$app->utilities->printrr($model);
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
         $counties = Counties::find()->asArray()->all();
         $constituencies = PollingCenter::find()->select(['constituency_code', 'constituency_name', 'county_code'])->distinct()->asArray()->all();
         $wards = PollingCenter::find()->select(['caw_code', 'caw_name'])->distinct()->asArray()->all();
         $centers = PollingCenter::find()->select(['registration_center_code', 'registration_center_name'])->distinct()->where(['<>', 'registration_center_name', ''])->asArray()->all();
-
+        $resultLevel = ResultsLevel::find()->all();
 
         return $this->render('update', [
             'model' => $model,
@@ -137,6 +188,7 @@ class AgentCentersController extends Controller
             'constituencies' => [], // ArrayHelper::map($constituencies, 'constituency_code', 'constituency_name'),
             'wards' => [], // ArrayHelper::map($wards, 'caw_code', 'caw_name'),
             'centers' => [], // ArrayHelper::map($centers, 'registration_center_code', 'registration_center_name')
+            'levels' => ArrayHelper::map($resultLevel, 'level', 'description'),
         ]);
     }
 
@@ -240,7 +292,7 @@ class AgentCentersController extends Controller
     public function actionStationDd($ward)
     {
         $data = PollingCenter::find()
-            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id', 'registration_center_code'])
+            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id', 'polling_station_code'])
             ->where(['caw_code' => $ward])
             ->asArray()
             ->all();
