@@ -34,9 +34,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'created_at:datetime',
             'updated_at:datetime',
-           'countable'
-           // 'created_by',
-           // 'updated_by',
+            'countable',
+            [
+                'label' => 'constituency',
+                'value' => function ($model) {
+                    return $model->station->constituency_name;
+                }
+            ],
+            [
+                'label' => 'Result Level',
+                'value' => function ($model) {
+                    return $model->level->description;
+                }
+            ]
+            // 'created_by',
+            // 'updated_by',
         ],
     ]) ?>
 

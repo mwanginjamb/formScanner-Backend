@@ -50,6 +50,18 @@ class Candidate extends \yii\db\ActiveRecord
             [['created_at', 'updated_at', 'created_by', 'updated_by', 'countable', 'result_level_id'], 'integer'],
             [['name'], 'string', 'max' => 250],
             [['candidate_code', 'constituency_code'], 'string', 'max' => 45],
+            [['candidate_code', 'name'], 'required'],
+            [['name', 'candidate_code'], 'unique'],
+            [
+                'constituency_code',
+                'required',
+                'when' => function ($model) {
+                    return $model->result_level_id == 2;
+                },
+                'whenClient' => "function (attribute, value) { 
+                    return $('#candidate-result_level_id').val() == '2'; 
+                }"
+            ]
         ];
     }
 
@@ -67,7 +79,7 @@ class Candidate extends \yii\db\ActiveRecord
             'updated_by' => 'Updated By',
             'countable' => 'Countable',
             'candidate_code' => 'Candidate Code',
-            'result_level_id' => 'Result Level ID',
+            'result_level_id' => 'Result Level ',
             'constituency_code' => 'Constituency Code',
         ];
     }
@@ -79,5 +91,15 @@ class Candidate extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\query\CandidateQuery(get_called_class());
+    }
+
+    public function getStation()
+    {
+        return $this->hasOne(PollingCenter::class, ['constituency_code' => 'constituency_code'])->from(PollingCenter::tableName());
+    }
+
+    public function getLevel()
+    {
+        return $this->hasOne(ResultsLevel::class, ['id' => 'result_level_id']);
     }
 }

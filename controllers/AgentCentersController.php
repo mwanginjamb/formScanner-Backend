@@ -170,7 +170,7 @@ class AgentCentersController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = 'scenarioupdate';
-        //\Yii::$app->utilities->printrr($model);
+        // \Yii::$app->utilities->printrr($model->user);
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
@@ -179,6 +179,7 @@ class AgentCentersController extends Controller
         $wards = PollingCenter::find()->select(['caw_code', 'caw_name'])->distinct()->asArray()->all();
         $centers = PollingCenter::find()->select(['registration_center_code', 'registration_center_name'])->distinct()->where(['<>', 'registration_center_name', ''])->asArray()->all();
         $resultLevel = ResultsLevel::find()->all();
+        // $model->county = $model->center->county_name;
 
         return $this->render('update', [
             'model' => $model,

@@ -4,9 +4,12 @@ namespace app\controllers;
 
 use app\models\Candidate;
 use app\models\CandidateSearch;
+use app\models\PollingCenter;
+use app\models\ResultsLevel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * CandidateController implements the CRUD actions for Candidate model.
@@ -68,6 +71,7 @@ class CandidateController extends Controller
     public function actionCreate()
     {
         $model = new Candidate();
+        $model->countable = 1;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -77,10 +81,13 @@ class CandidateController extends Controller
             $model->loadDefaultValues();
         }
 
-        //$resultLevels = 
+        $resultLevels = ResultsLevel::find()->all();
+        $constituencies = PollingCenter::find()->select(['constituency_code', 'constituency_name', 'county_code'])->distinct()->asArray()->all();
 
         return $this->render('create', [
             'model' => $model,
+            'levels' => ArrayHelper::map($resultLevels, 'level', 'description'),
+            'constituencies' => ArrayHelper::map($constituencies, 'constituency_code', 'constituency_name')
         ]);
     }
 
@@ -99,8 +106,14 @@ class CandidateController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $resultLevels = ResultsLevel::find()->all();
+        $constituencies = PollingCenter::find()->select(['constituency_code', 'constituency_name', 'county_code'])->distinct()->asArray()->all();
+
+
         return $this->render('update', [
             'model' => $model,
+            'levels' => ArrayHelper::map($resultLevels, 'level', 'description'),
+            'constituencies' => ArrayHelper::map($constituencies, 'constituency_code', 'constituency_name')
         ]);
     }
 

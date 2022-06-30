@@ -52,8 +52,8 @@ class AgentCenters extends \yii\db\ActiveRecord
     {
 
         return [
-            self::SCENARIOCREATE      =>  ['agent_id', 'center_id', 'county', 'constituency', 'ward', 'center'],
-            self::SCENARIOUPDATE      =>  ['center_id', 'county', 'constituency', 'ward', 'center'],
+            self::SCENARIOCREATE      =>  ['agent_id', 'center_id', 'county', 'constituency', 'ward', 'center', 'result_level_id'],
+            self::SCENARIOUPDATE      =>  ['center_id', 'county', 'constituency', 'ward', 'center', 'result_level_id'],
         ];
     }
     // get scenarios
@@ -114,8 +114,6 @@ class AgentCenters extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PollingCenter::class, ['id' => 'center_id']);
     }
-
-
 
     public function getLevel()
     {
