@@ -12,11 +12,51 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'agent_id')->dropDownList($agents,['prompt' => 'Select Agent ...']) ?>
+    <div class="row">
+        <div class="col-md-6">
 
-    <?= $form->field($model, 'center_id')->dropDownList($polling_stations,['prompt' => 'Select Polling Station ...']) ?>
+            <?= $form->field($model, 'county')->dropDownList(
+                $counties,
+                [
+                    'prompt' => 'Select  ...',
+                    'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/constituency-dd?county=') . '" + $(this).val(), function( data ) {
+                    $( "select#agentcenters-constituency" ).html( data );
+                });
+                '
+                ]
+            ) ?>
+            <?= $form->field($model, 'ward')->dropDownList($wards, [
+                'prompt' => 'Select  ...',
+                'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/station-dd?ward=') . '" + $(this).val(), function( data ) {
+                    $( "select#agentcenters-center_id" ).html( data );
+                });
+                '
+            ]) ?>
+            <?= $form->field($model, 'agent_id')->dropDownList($agents, ['prompt' => 'Select Agent ...']) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'constituency')->dropDownList($constituencies, [
+                'prompt' => 'Select  ...',
+                'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/ward-dd?constituency=') . '" + $(this).val(), function( data ) {
+                    $( "select#agentcenters-ward" ).html( data );
+                });
+                '
+            ]) ?>
+            <?php $form->field($model, 'center')->dropDownList($centers, [
+                'prompt' => 'Select  ...',
+                'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/station-dd?center=') . '" + $(this).val(), function( data ) {
+                    $( "select#agentcenters-center_id" ).html( data );
+                });
+                '
+            ]) ?>
+            <?= $form->field($model, 'center_id')->dropDownList($polling_stations, ['prompt' => 'Select Polling Station ...']) ?>
 
-   
+        </div>
+    </div>
+
+
+
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -25,3 +65,9 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$script = <<<JS
+$("#agentcenters-center_id").select2();
+JS;
+//$this->registerJs($script);

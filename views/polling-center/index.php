@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Import Polling Centers', ['excel-import'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,17 +31,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'county_code',
+            // 'id',
+            // 'county_code',
             'county_name',
             'constituency_code',
             'constituency_name',
-            //'caw_code',
-            //'caw_name',
-            //'registration_center_name',
-            //'voters_per_registration_center',
-            //'polling_station_code',
-            //'polling_station_name',
+            // 'caw_code',
+            'caw_name',
+            'registration_center_code',
+            'registration_center_name',
+            'voters_per_registration_center',
+            'polling_station_code',
+            'polling_station_name',
             //'voters_per_polling_station',
             //'created_at',
             //'updated_at',
@@ -50,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, PollingCenter $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

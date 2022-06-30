@@ -68,6 +68,15 @@ $config = [
                 ]
             ],
         ],
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => null,
+                    'js' => ['/plugins/jquery/jquery.js'],
+                ]
+            ],
+            'appendTimestamp' => true,
+        ],
         'africasms' => [
             'class' => 'app\helpers\Sms_Sender',
         ],
@@ -99,7 +108,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['127.0.0.1','192.168.1.118', '::1'],
+        'allowedIPs' => ['127.0.0.1', '192.168.1.118', '::1'],
     ];
 }
 

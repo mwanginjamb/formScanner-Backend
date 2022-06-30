@@ -16,7 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'agents' => $agents,
-        'polling_stations' => $polling_stations
+        'polling_stations' => $polling_stations,
+        'counties' => $counties,
+        'constituencies' => $constituencies,
+        'wards' => $wards,
+        'centers' => $centers
     ]) ?>
 
 </div>

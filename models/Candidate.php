@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
+
 /**
  * This is the model class for table "candidate".
  *
@@ -16,6 +17,9 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $countable
+ * @property string|null $candidate_code
+ * @property int|null $result_level_id
+ * @property string|null $constituency_code
  */
 class Candidate extends \yii\db\ActiveRecord
 {
@@ -27,6 +31,7 @@ class Candidate extends \yii\db\ActiveRecord
         return 'candidate';
     }
 
+
     public function behaviors()
     {
         return [
@@ -35,20 +40,16 @@ class Candidate extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            ['countable', 'integer'],
-            [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['created_at', 'updated_at', 'created_by', 'updated_by', 'countable', 'result_level_id'], 'integer'],
             [['name'], 'string', 'max' => 250],
-            ['name', 'unique', 'message' => 'This candidate is already registered.'],
-            ['candidate_code', 'string'],
-            ['result_level_id', 'integer'],
-            ['constituency_code', 'string']
+            [['candidate_code', 'constituency_code'], 'string', 'max' => 45],
         ];
     }
 
@@ -64,16 +65,19 @@ class Candidate extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
-            'candidate_code' => 'Candidate Code'
+            'countable' => 'Countable',
+            'candidate_code' => 'Candidate Code',
+            'result_level_id' => 'Result Level ID',
+            'constituency_code' => 'Constituency Code',
         ];
     }
 
     /**
      * {@inheritdoc}
-     * @return \app\models\queries\CandidateQuery the active query used by this AR class.
+     * @return \app\models\query\CandidateQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\queries\CandidateQuery(get_called_class());
+        return new \app\models\query\CandidateQuery(get_called_class());
     }
 }

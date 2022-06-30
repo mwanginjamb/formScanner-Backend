@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\AgentCenters;
 use app\models\AgentCentersSearch;
+use app\models\Counties;
 use app\models\PollingCenter;
 use app\models\User;
 use app\modules\apiV1\resources\UserResource;
@@ -85,15 +86,27 @@ class AgentCentersController extends Controller
             $model->loadDefaultValues();
         }
 
+        $counties = Counties::find()->asArray()->all();
+        $constituencies = PollingCenter::find()->select(['constituency_code', 'constituency_name', 'county_code'])->distinct()->asArray()->all();
+        $wards = PollingCenter::find()->select(['caw_code', 'caw_name'])->distinct()->asArray()->all();
+        $centers = PollingCenter::find()->select(['registration_center_code', 'registration_center_name'])->distinct()->where(['<>', 'registration_center_name', ''])->asArray()->all();
+
+        // \Yii::$app->utilities->printrr($centers);
         return $this->render('create', [
             'model' => $model,
             'agents' => ArrayHelper::map(UserResource::find()->all(), 'id', 'full_names'),
-            'polling_stations' => ArrayHelper::map(PollingCenter::find()
-                ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id'])
-                ->asArray()
-                ->all(), 'id', 'station')
+            'polling_stations' => [],
+            'counties' => ArrayHelper::map($counties, 'CountyID', 'CountyName'),
+            'constituencies' => ArrayHelper::map($constituencies, 'constituency_code', 'constituency_name'),
+            'wards' => ArrayHelper::map($wards, 'caw_code', 'caw_name'),
+            'centers' => ArrayHelper::map($centers, 'registration_center_code', 'registration_center_name')
         ]);
     }
+
+    // ArrayHelper::map(PollingCenter::find()
+    //             ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id'])
+    //             ->asArray()
+    //             ->all(), 'id', 'station')
 
     /**
      * Updates an existing AgentCenters model.
@@ -105,18 +118,25 @@ class AgentCentersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->scenario = 'scenarioupdate';
+        // \Yii::$app->utilities->printrr($model);
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        $counties = Counties::find()->asArray()->all();
+        $constituencies = PollingCenter::find()->select(['constituency_code', 'constituency_name', 'county_code'])->distinct()->asArray()->all();
+        $wards = PollingCenter::find()->select(['caw_code', 'caw_name'])->distinct()->asArray()->all();
+        $centers = PollingCenter::find()->select(['registration_center_code', 'registration_center_name'])->distinct()->where(['<>', 'registration_center_name', ''])->asArray()->all();
+
 
         return $this->render('update', [
             'model' => $model,
             'agents' => ArrayHelper::map(UserResource::find()->all(), 'id', 'full_names'),
-            'polling_stations' => ArrayHelper::map(PollingCenter::find()
-                ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id'])
-                ->asArray()
-                ->all(), 'id', 'station')
+            'polling_stations' => [],
+            'counties' => ArrayHelper::map($counties, 'CountyID', 'CountyName'),
+            'constituencies' => [], // ArrayHelper::map($constituencies, 'constituency_code', 'constituency_name'),
+            'wards' => [], // ArrayHelper::map($wards, 'caw_code', 'caw_name'),
+            'centers' => [], // ArrayHelper::map($centers, 'registration_center_code', 'registration_center_name')
         ]);
     }
 
@@ -148,5 +168,95 @@ class AgentCentersController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+    public function actionConstituencyDd($county)
+    {
+        $data = PollingCenter::find()->select(['constituency_code', 'constituency_name', 'county_code'])->distinct()
+            ->where(['county_code' => $county])
+            ->asArray()->all();
+
+        if (count($data)) {
+            ob_start();
+            echo '<option value="0">Select...</option>';
+            foreach ($data  as $d) {
+                echo "<option value='" . $d['constituency_code'] . "'>" . $d['constituency_name'] . "</option>";
+                $listData = ob_get_contents();
+            }
+            ob_end_clean();
+            echo $listData;
+            exit;
+        } else {
+            echo "<option value=''>No data Available</option>";
+        }
+    }
+
+
+
+    public function actionWardDd($constituency)
+    {
+        $data = $wards = PollingCenter::find()->select(['caw_code', 'caw_name'])->distinct()
+            ->where(['constituency_code' => $constituency])
+            ->asArray()->all();
+
+        if (count($data)) {
+            ob_start();
+            echo '<option value="0">Select...</option>';
+            foreach ($data  as $d) {
+                echo "<option value='" . $d['caw_code'] . "'>" . $d['caw_name'] . "</option>";
+                $listData = ob_get_contents();
+            }
+            ob_end_clean();
+            echo $listData;
+            exit;
+        } else {
+            echo "<option value=''>No data Available</option>";
+        }
+    }
+
+    public function actionCenterDd($ward)
+    {
+        $data = PollingCenter::find()->select(['registration_center_code', 'registration_center_name'])->distinct()
+            ->where(['<>', 'registration_center_name', ''])
+            ->andWhere(['caw_code' => $ward])
+            ->asArray()->all();
+
+        if (count($data)) {
+            ob_start();
+            echo '<option value="0">Select...</option>';
+            foreach ($data  as $d) {
+                echo "<option value='" . $d['registration_center_code'] . "'>" . $d['registration_center_name'] . "</option>";
+                $listData = ob_get_contents();
+            }
+            ob_end_clean();
+            echo $listData;
+            exit;
+        } else {
+            echo "<option value=''>No data Available</option>";
+        }
+    }
+
+    public function actionStationDd($ward)
+    {
+        $data = PollingCenter::find()
+            ->select(['concat(county_name," ",constituency_name," ",polling_station_name," ",polling_station_code) as station', 'id', 'registration_center_code'])
+            ->where(['caw_code' => $ward])
+            ->asArray()
+            ->all();
+
+        if (count($data)) {
+            ob_start();
+            echo '<option value="0">Select...</option>';
+            foreach ($data  as $d) {
+                echo "<option value='" . $d['id'] . "'>" . $d['station'] . "</option>";
+                $listData = ob_get_contents();
+            }
+            ob_end_clean();
+            echo $listData;
+            exit;
+        } else {
+            echo "<option value=''>No data Available</option>";
+        }
     }
 }

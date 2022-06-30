@@ -53,4 +53,10 @@ class UserOtp extends \yii\db\ActiveRecord
         $otp = substr($prod, 0, 4);
         $this->otp = $otp;
     }
+
+
+    public function getAssignment()
+    {
+        return $this->hasOne(AgentCenters::class, ['agent_id' => 'id']);
+    }
 }

@@ -77,6 +77,8 @@ class CandidateController extends Controller
             $model->loadDefaultValues();
         }
 
+        //$resultLevels = 
+
         return $this->render('create', [
             'model' => $model,
         ]);

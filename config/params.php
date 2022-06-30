@@ -11,4 +11,7 @@ return [
     'sharepointPassword' => env('SP_PASSWORD'),
     'clientID' => '0cc921e1-a4c1-4562-873e-3cc40259cd6b', // SP App Client ID
     'clientSecret' => 'jm88Q~.2_2PwKWDwKDvHPvObc0JrSuiZDFsGHdmd', // SP Client Secret
+    'generalTitle' => 'Observer App',
+    'demoCompany' => ''
+
 ];
