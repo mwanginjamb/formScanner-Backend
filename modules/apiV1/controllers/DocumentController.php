@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HP ELITEBOOK 840 G5
@@ -11,6 +12,9 @@ namespace app\modules\apiV1\controllers;
 
 use app\models\Documents;
 use app\modules\apiV1\resources\DocumentResource;
+use yii\base\DynamicModel;
+use yii\data\ActiveDataProvider;
+use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
@@ -40,8 +44,45 @@ class DocumentController extends ActiveController
             ],
         ];
 
+        /* $behaviours['authenticator']['only'] = ['view', 'create', 'update', 'delete'];
+        $behaviours['authenticator']['authMethods'] = [
+            HttpBearerAuth::class
+        ];
+
+        $behaviours['authenticator']['except'] = ['options'];*/
+
         return $behaviours;
     }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['dataFilter'] = [
+            'class' => \yii\data\ActiveDataFilter::class,
+            'attributeMap' => [
+                'agent' => 'created_by'
+            ],
+            'searchModel' => (new DynamicModel(['agent']))
+                ->addRule(['agent'], 'integer', ['min' => 1])
+        ];
+
+        return $actions;
+    }
+
+    /* public function actions()
+    {
+        $actions = parent::actions();
+        //redefine the prepareDataProvider variable of index action in ActiveController  class
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProviderCB'];
+        return $actions;
+    }
+
+    public function prepareDataProviderCB()
+    {
+        return new ActiveDataProvider([
+            'query' => $this->modelClass::find()->andWhere(['created_by' => \Yii::$app->user->id])
+        ]);
+    }*/
 
     protected function verbs()
     {

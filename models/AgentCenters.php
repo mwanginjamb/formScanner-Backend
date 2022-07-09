@@ -112,7 +112,7 @@ class AgentCenters extends \yii\db\ActiveRecord
 
     public function getCenter()
     {
-        return $this->hasOne(PollingCenter::class, ['id' => 'center_id']);
+        return $this->hasOne(PollingCenter::class, ['id' => 'center_id'])->from(PollingCenter::tableName());
     }
 
     public function getLevel()

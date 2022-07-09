@@ -15,7 +15,6 @@ use yii\bootstrap4\ActiveForm;
     <?= $form->errorSummary($model) ?>
     <div class="row">
         <div class="col-md-6">
-
             <?= $form->field($model, 'county')->dropDownList(
                 $counties,
                 [
@@ -26,6 +25,20 @@ use yii\bootstrap4\ActiveForm;
                 '
                 ]
             ) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'constituency')->dropDownList($constituencies, [
+                'prompt' => 'Select  ...',
+                'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/ward-dd?constituency=') . '" + $(this).val(), function( data ) {
+            $( "select#agentcenters-ward" ).html( data );
+        });
+        '
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
             <?= $form->field($model, 'ward')->dropDownList($wards, [
                 'prompt' => 'Select  ...',
                 'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/station-dd?ward=') . '" + $(this).val(), function( data ) {
@@ -33,24 +46,19 @@ use yii\bootstrap4\ActiveForm;
                 });
                 '
             ]) ?>
-            <?= $form->field($model, 'agent_id')->dropDownList($agents, ['prompt' => 'Select Agent ...']) ?>
+
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'constituency')->dropDownList($constituencies, [
-                'prompt' => 'Select  ...',
-                'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/ward-dd?constituency=') . '" + $(this).val(), function( data ) {
-                    $( "select#agentcenters-ward" ).html( data );
-                });
-                '
-            ]) ?>
-            <?php $form->field($model, 'center')->dropDownList($centers, [
-                'prompt' => 'Select  ...',
-                'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/station-dd?center=') . '" + $(this).val(), function( data ) {
-                    $( "select#agentcenters-center_id" ).html( data );
-                });
-                '
-            ]) ?>
             <?= $form->field($model, 'center_id')->dropDownList($polling_stations, ['prompt' => 'Select Polling Station ...']) ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'agent_id')->dropDownList($agents, ['prompt' => 'Select Agent ...']) ?>
+
+        </div>
+        <div class="col-md-6">
             <?= $form->field($model, 'result_level_id')->dropDownList($levels, ['prompt' => 'Select  ...']) ?>
 
         </div>
@@ -59,12 +67,28 @@ use yii\bootstrap4\ActiveForm;
 
 
 
+</div>
+<div class="col-md-6">
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+</div>
+</div>
+<?php $form->field($model, 'center')->dropDownList($centers, [
+    'prompt' => 'Select  ...',
+    'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl('agent-centers/station-dd?center=') . '" + $(this).val(), function( data ) {
+                            $( "select#agentcenters-center_id" ).html( data );
+                        });
+                        '
+]) ?>
 
-    <?php ActiveForm::end(); ?>
+
+
+
+
+<div class="form-group">
+    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+</div>
+
+<?php ActiveForm::end(); ?>
 
 </div>
 

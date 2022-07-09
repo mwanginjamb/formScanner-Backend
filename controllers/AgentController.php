@@ -72,21 +72,24 @@ class AgentController extends Controller
 
     public function actionList()
     {
-        $agents = UserOtp::find()->all();
+        $agents = UserOtp::find()->with('assignment')->all();
 
-        // \Yii::$app->utilities->printrr($agents[0]->assignment->level);
 
         foreach ($agents as $a) {
+
             $result['data'][] = [
                 'username' => $a->username,
                 'phone_number' => $a->phone_number,
-                'full_names' => $a->full_names,
-                'center' => $a->assignment->center->polling_station_name ?? '',
-                'level' => $a->assignment->level->description ?? ''
+                'full_names' => $a->full_names
             ];
         }
 
         return $result;
+    }
+
+    public function getPollingCenter($id)
+    {
+        return PollingCenter::findOne(['id' => $id]);
     }
 
     /**

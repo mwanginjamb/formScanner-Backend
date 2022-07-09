@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HP ELITEBOOK 840 G5
@@ -9,6 +10,7 @@
 namespace app\modules\apiV1\controllers;
 
 use app\models\DocumentLine;
+use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
@@ -37,6 +39,13 @@ class ResultController extends ActiveController
                 'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
             ],
         ];
+
+
+        /* $behaviours['authenticator']['authMethods'] = [
+            HttpBearerAuth::class
+        ];
+
+        $behaviours['authenticator']['except'] = ['options'];*/
 
         return $behaviours;
     }

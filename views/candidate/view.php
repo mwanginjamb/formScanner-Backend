@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'constituency',
                 'value' => function ($model) {
-                    return $model->station->constituency_name;
+                    return $model->station->constituency_name ?? '';
                 }
             ],
             [

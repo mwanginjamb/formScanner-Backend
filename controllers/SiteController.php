@@ -122,10 +122,11 @@ class SiteController extends Controller
 
             $model = Documents::findOne(['id' => $data->id]);
             $model->coordinates = $data->coordinates;
+            $model->created_by = $data->created_by;
             /*Process Media for Saving*/
             $bin = base64_decode($data->ImageBinary);
-            $size = getImageSizeFromString($bin);
-            $ext = substr($size['mime'], 6);
+            $size = $bin ? getImageSizeFromString($bin) : null;
+            $ext = $size ? substr($size['mime'], 6) : 'png';
             $img_file = Yii::$app->security->generateRandomString(5) . '.' . $ext;
             file_put_contents($img_file, $bin);
 
@@ -136,7 +137,10 @@ class SiteController extends Controller
 
             // Create a record in Docs Table
             $model->local_file_path = Url::home(true) . $img_file;
-            $model->sharepoint_path = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//' . $img_file;
+            $pathParts = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
+            $pathParts = str_replace('.', "", $pathParts);
+            $path = $pathParts . $img_file;
+            $model->sharepoint_path = $path;
             if (!$model->save()) {
                 return [
                     'errors' => $model->errors
@@ -153,9 +157,12 @@ class SiteController extends Controller
 
     public function getLibraryParts($pollingStationCode)
     {
+        //$model->sharepoint_path = preg_replace("/\p{P}/u", "", $path);
 
         $model = PollingCenter::findOne(['polling_station_code' => $pollingStationCode]);
-        return $model->county_name . "/" . $model->constituency_name . "/" . $model->caw_name . "/" . $model->polling_station_name . "/" . $model->polling_station_code;
+        $path =  $model->county_name . "/" . $model->constituency_name . "/" . $model->caw_name . "/" . $model->polling_station_name . "/" . $model->polling_station_code;
+        $parts =  str_replace('.', "", $path);
+        return $parts;
     }
 
     /**

@@ -29,7 +29,7 @@ use yii\bootstrap4\ActiveForm;
             <?= $form->field($model, 'countable')->checkbox([$model->countable]) ?>
             <?= $form->field($model, 'candidate_code')->textInput([]) ?>
 
-            <?php $form->field($model, 'result_level_id')->dropDownList($levels, ['prompt' => 'select ...']) ?>
+            <?= $form->field($model, 'result_level_id')->dropDownList($levels, ['prompt' => 'select ...']) ?>
             <?php $form->field($model, 'constituency_code')->dropDownList($constituencies, ['prompt' => 'select ...']) ?>
 
             <div class="form-group">

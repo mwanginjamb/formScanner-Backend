@@ -20,7 +20,7 @@ $url = \yii\helpers\Url::home(true);
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <?= Html::a('Assign a Polling Station', ['agent-center/create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Assign a Polling Station', ['agent-centers/create'], ['class' => 'btn btn-success']) ?>
                 <?php Html::a('<i class="fa fa-download"></i> Download Template', \yii\helpers\Url::home(true) . "templates/agents.xlsx", ['class' => 'btn btn-info mx-1', 'title' => 'Get data import sample excel template here.']) ?>
             </div>
         </div>
@@ -90,7 +90,7 @@ $script = <<<JS
                 { title: 'center' ,data: 'center'},
                 { title: 'Polling Station Code' ,data: 'polling_station_code'},
                 { title: 'Agent Level' ,data: 'level'},
-                { title: 'Aactions' ,data: 'actions'},
+                { title: 'Actions' ,data: 'actions'},
                
                
             ] ,                              

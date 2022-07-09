@@ -12,6 +12,7 @@ namespace app\modules\apiV1\controllers;
 
 use app\models\Candidate;
 use yii\base\DynamicModel;
+use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
@@ -41,13 +42,19 @@ class CandidateController extends ActiveController
             ],
         ];
 
+
+        /* $behaviours['authenticator']['authMethods'] = [
+            HttpBearerAuth::class
+        ];
+        $behaviours['authenticator']['except'] = ['options'];*/
+
+
         return $behaviours;
     }
 
     public function actions()
     {
         $actions = parent::actions();
-
         $actions['index']['dataFilter'] = [
             'class' => \yii\data\ActiveDataFilter::class,
             'attributeMap' => [

@@ -85,8 +85,7 @@ $script = <<<JS
                 { title: 'Agent ID' ,data: 'username'},
                 { title: 'Phone Number' ,data: 'phone_number'},
                 { title: 'Full Names' ,data: 'full_names'},
-                { title: 'Polling Center' ,data: 'center'},
-                { title: 'level' ,data: 'level'},
+               
                
                
             ] ,                              

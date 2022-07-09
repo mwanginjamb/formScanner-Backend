@@ -359,7 +359,7 @@ $employee = [];
 
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <strong>Copyright &copy; <?= Yii::$app->params['generalTitle'] ?> - 2014 - <?= date('Y') ?> <a href="#"> <?= strtoupper(Yii::$app->params['demoCompany']) ?></a>.</strong>
+            <strong>Copyright &copy; <?= Yii::$app->params['generalTitle'] ?> <?= date('Y') ?> <a href="#"> <?= strtoupper(Yii::$app->params['demoCompany']) ?></a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
                 <b></b>

