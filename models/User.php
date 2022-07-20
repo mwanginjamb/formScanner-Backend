@@ -32,7 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
-    public $otp;
+    //public $otp;
     // public $phone_number;
     // public $full_names;
 
@@ -242,7 +242,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function generateOtp()
     {
         $number = time();
-        $random = rand(1535, 3555);
+        $random = rand(1, 99);
         $prod = ($number * $random);
         $otp = substr($prod, 0, 4);
         $this->otp = $otp;

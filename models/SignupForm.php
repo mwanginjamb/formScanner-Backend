@@ -18,6 +18,7 @@ class SignupForm extends Model
     public $password_confirm;
     public $phone_number;
     public $full_names;
+    public $otp;
 
 
     /**
@@ -49,7 +50,8 @@ class SignupForm extends Model
 
 
             ['full_names', 'required'],
-            ['full_names', 'string', 'max' => '150']
+            ['full_names', 'string', 'max' => '150'],
+            ['otp', 'string', 'max' => '5']
 
         ];
     }
