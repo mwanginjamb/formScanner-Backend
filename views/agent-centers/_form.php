@@ -94,6 +94,6 @@ use yii\bootstrap4\ActiveForm;
 
 <?php
 $script = <<<JS
-$("#agentcenters-center_id").select2();
+$("#agentcenters-agent_id").select2();
 JS;
-//$this->registerJs($script);
+$this->registerJs($script);

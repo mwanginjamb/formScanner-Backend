@@ -75,7 +75,7 @@ class SignupForm extends Model
         $user->generateOtp();
         $user->access_token = \Yii::$app->security->generateRandomString(255);
         $user->status = 10;
-        $user->phone_number =  $user->phone_number;
+        $user->phone_number =  $this->phone_number;
         $user->full_names = $this->full_names;
 
         return $user->save() /*&& $this->sendEmail($user)*/;
