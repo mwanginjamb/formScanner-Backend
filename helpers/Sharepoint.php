@@ -61,7 +61,7 @@ class Sharepoint extends Component
                 ->add($fileCreationInformation);
             $ctx->executeQuery();
         } catch (\Exception $e) {
-            throw new \yii\web\HttpException(500, 'Sharepoint Error: ' . $e->getMessage());
+            throw new \yii\web\HttpException(500, 'Sharepoint Error: ' . $e->getMessage() . ' Path Given: ' . $filepath);
             // 'Authentication failed: ' . $e->getMessage() . "\n";
         }
     }
