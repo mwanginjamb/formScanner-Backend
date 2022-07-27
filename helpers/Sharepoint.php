@@ -37,7 +37,7 @@ class Sharepoint extends Component
 
 
     //SHAREPOINT UPLOAD
-    public function sharepoint_attach($filepath, $libraryParts = '')
+    public function sharepoint_attach($filepath, $binary, $libraryParts = '')
     {  //read list
 
         if ($libraryParts) {
@@ -53,7 +53,7 @@ class Sharepoint extends Component
             $ctx = (new ClientContext(Yii::$app->params['sharepointUrl']))->withCredentials($credentials);
 
             $fileCreationInformation = new FileCreationInformation();
-            $fileCreationInformation->Content = file_get_contents($localFilePath);
+            $fileCreationInformation->Content = $binary; //file_get_contents($localFilePath);
             $fileCreationInformation->Url = basename($localFilePath);
             $uploadFile = $ctx->getWeb()
                 ->getFolderByServerRelativeUrl(dirname($targetLibraryTitle))
@@ -61,7 +61,7 @@ class Sharepoint extends Component
                 ->add($fileCreationInformation);
             $ctx->executeQuery();
         } catch (\Exception $e) {
-            throw new \yii\web\HttpException(500, 'Sharepoint Error: ' . $e->getMessage() . ' Path Given: ' . $filepath);
+            throw new \yii\web\HttpException(500, 'Sharepoint Error: ' . $e->getMessage() . ' Path Given: ' . $localFilePath);
             // 'Authentication failed: ' . $e->getMessage() . "\n";
         }
     }

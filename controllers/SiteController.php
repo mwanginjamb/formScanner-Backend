@@ -131,27 +131,28 @@ class SiteController extends Controller
                 $size = $bin ? getImageSizeFromString($bin) : null;
                 $ext = $size ? substr($size['mime'], 6) : 'png';
                 $img_file = Yii::$app->security->generateRandomString(5) . '.' . $ext;
-                file_put_contents($img_file, $bin);
-                //Upload to sharepoint
-                $LibraryParts = $this->getLibraryParts($model->polling_station);
-                // $absolute_path = Yii::getAlias('@app') . '\web\\';
-                \Yii::$app->sharepoint->sharepoint_attach('../web/' . $img_file, $LibraryParts);
-                // Create a record in Docs Table
-                $model->local_file_path = Url::home(true) . $img_file;
-                $pathParts = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
-                $pathParts = str_replace('.', "", $pathParts);
-                $path = $pathParts . $img_file;
-                $model->sharepoint_path = $path;
-                if (!$model->save()) {
+                if (file_put_contents($img_file, $bin)) {
+                    //Upload to sharepoint
+                    $LibraryParts = $this->getLibraryParts($model->polling_station);
+                    $absolute_path = Yii::getAlias('@app') . '\web\\';
+                    \Yii::$app->sharepoint->sharepoint_attach($img_file, $bin, $LibraryParts);
+                    // Create a record in Docs Table
+                    $model->local_file_path = Url::home(true) . $img_file;
+                    $pathParts = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
+                    $pathParts = str_replace('.', "", $pathParts);
+                    $path = $pathParts . $img_file;
+                    $model->sharepoint_path = $path;
+                    if (!$model->save()) {
+                        return [
+                            'errors' => $model->errors
+                        ];
+                    }
+
+
                     return [
-                        'errors' => $model->errors
+                        'model' => $model
                     ];
                 }
-
-
-                return [
-                    'model' => $model
-                ];
             }
         } catch (Exception $e) {
             throw new \yii\web\HttpException(500, $e->getMessage());
