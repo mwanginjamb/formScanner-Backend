@@ -37,7 +37,7 @@ class Sharepoint extends Component
 
 
     //SHAREPOINT UPLOAD
-    public function sharepoint_attach($filepath, $binary, $libraryParts = '')
+    public function sharepoint_attach($filepath, $libraryParts = '')
     {  //read list
 
         if ($libraryParts) {
@@ -53,7 +53,7 @@ class Sharepoint extends Component
             $ctx = (new ClientContext(Yii::$app->params['sharepointUrl']))->withCredentials($credentials);
 
             $fileCreationInformation = new FileCreationInformation();
-            $fileCreationInformation->Content = $binary; //file_get_contents($localFilePath);
+            $fileCreationInformation->Content = file_get_contents($localFilePath);
             $fileCreationInformation->Url = basename($localFilePath);
             $uploadFile = $ctx->getWeb()
                 ->getFolderByServerRelativeUrl(dirname($targetLibraryTitle))
