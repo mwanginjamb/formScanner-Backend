@@ -101,6 +101,7 @@ class UserController extends Controller
             //return User::findByPhone($model->phone_number)->station;
             return $model->_summary;
         }
+        //return $model;
 
         Yii::$app->response->statusCode = 422;
         return [

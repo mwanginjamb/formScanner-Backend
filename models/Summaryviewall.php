@@ -69,7 +69,7 @@ class Summaryviewall extends \yii\db\ActiveRecord
             return $this->_summary;
         }
 
-        return false;
+        return $model;
     }
 
     /**

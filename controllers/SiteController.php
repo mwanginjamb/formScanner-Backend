@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 use app\models\ContactForm;
 use app\models\PollingCenter;
 use app\models\Summaryviewall;
+use Exception;
 
 class SiteController extends Controller
 {
@@ -116,43 +117,50 @@ class SiteController extends Controller
 
         // Convert it into a PHP object
         $data = json_decode($json);
+        //throw new \yii\web\HttpException(500, 'Hello...');
+        //exit();
 
+        try {
+            if ($data && isset($data->ImageBinary)) {
 
-        if ($data && !empty($data->ImageBinary)) {
+                $model = Documents::findOne(['id' => $data->id]);
+                $model->coordinates = $data->coordinates ?? 0;
+                $model->created_by = $data->created_by ?? 0;
+                /*Process Media for Saving*/
+                $bin = base64_decode($data->ImageBinary);
+                $size = $bin ? getImageSizeFromString($bin) : null;
+                $ext = $size ? substr($size['mime'], 6) : 'png';
+                $img_file = Yii::$app->security->generateRandomString(5) . '.' . $ext;
+                file_put_contents($img_file, $bin);
 
-            $model = Documents::findOne(['id' => $data->id]);
-            $model->coordinates = $data->coordinates;
-            $model->created_by = $data->created_by;
-            /*Process Media for Saving*/
-            $bin = base64_decode($data->ImageBinary);
-            $size = $bin ? getImageSizeFromString($bin) : null;
-            $ext = $size ? substr($size['mime'], 6) : 'png';
-            $img_file = Yii::$app->security->generateRandomString(5) . '.' . $ext;
-            file_put_contents($img_file, $bin);
+                //Upload to sharepoint
 
-            //Upload to sharepoint
+                $LibraryParts = $this->getLibraryParts($model->polling_station);
+                \Yii::$app->sharepoint->sharepoint_attach($img_file, $LibraryParts);
 
-            $LibraryParts = $this->getLibraryParts($model->polling_station);
-            \Yii::$app->sharepoint->sharepoint_attach($img_file, $LibraryParts);
+                // Create a record in Docs Table
+                $model->local_file_path = Url::home(true) . $img_file;
+                $pathParts = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
+                $pathParts = str_replace('.', "", $pathParts);
+                $path = $pathParts . $img_file;
+                $model->sharepoint_path = $path;
+                if (!$model->save()) {
+                    return [
+                        'errors' => $model->errors
+                    ];
+                }
 
-            // Create a record in Docs Table
-            $model->local_file_path = Url::home(true) . $img_file;
-            $pathParts = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
-            $pathParts = str_replace('.', "", $pathParts);
-            $path = $pathParts . $img_file;
-            $model->sharepoint_path = $path;
-            if (!$model->save()) {
                 return [
-                    'errors' => $model->errors
+                    'model' => $model
                 ];
             }
-
-            return [
-                'model' => $model
-            ];
+        } catch (Exception $e) {
+            throw new \yii\web\HttpException(500, $e->getMessage());
         }
 
-        return [];
+
+
+        return false;
     }
 
     public function getLibraryParts($pollingStationCode)
