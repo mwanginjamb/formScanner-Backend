@@ -57,15 +57,20 @@ class DocumentsController extends Controller
     {
         $model = $this->findModel($id);
 
-        $rawImage = file_get_contents($model->local_file_path);
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        $mimeType = $finfo->buffer($rawImage);
+        $content = $mimeType = null;
+        if ($model->local_file_path) {
+            $rawImage = file_get_contents($model->local_file_path);
+            $content = base64_encode($rawImage);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($rawImage);
+        }
+
 
         //exit($mimeType);
 
         return $this->render('view', [
             'model' => $model,
-            'content' => base64_encode($rawImage),
+            'content' => $content,
             'mime' => $mimeType
         ]);
     }
