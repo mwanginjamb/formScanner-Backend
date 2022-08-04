@@ -82,7 +82,7 @@ $directory = Yii::getAlias('@app') . '/web/background';
 
 
 //$random_img = $images[array_rand($images)];
-
+$random_img = '';
 
 
 $style = <<<CSS
