@@ -144,7 +144,11 @@ $employee = [];
 
                         <div class="dropdown-divider"></div>
 
-                        <?= (!Yii::$app->user->isGuest) ? Html::a('<i class="fas fa-sign-out-alt"></i> Logout', '/site/logout/', ['class' => 'dropdown-item']) : ''; ?>
+                        <?= (!Yii::$app->user->isGuest) ? Html::a('<i class="fas fa-sign-out-alt"></i> Logout', '/site/logout/', ['class' => 'dropdown-item'], [
+                            'data' => [
+                                'method' => 'POST'
+                            ]
+                        ]) : ''; ?>
 
                         <div class="dropdown-divider"></div>
 
