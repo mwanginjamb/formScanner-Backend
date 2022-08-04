@@ -48,20 +48,7 @@ class Assignment extends \yii\db\ActiveRecord
     }
 
 
-    public function getCustomScenarios()
-    {
 
-        return [
-            self::SCENARIOCREATE      =>  ['agent_id', 'center_id', 'county', 'constituency', 'ward', 'center', 'result_level_id'],
-            self::SCENARIOUPDATE      =>  ['center_id', 'county', 'constituency', 'ward', 'center', 'result_level_id'],
-        ];
-    }
-    // get scenarios
-    public function scenarios()
-    {
-        $scenarios = $this->getCustomScenarios();
-        return $scenarios;
-    }
 
 
 
@@ -73,8 +60,8 @@ class Assignment extends \yii\db\ActiveRecord
     {
         return [
             [['agent_id', 'center_id', 'created_at', 'updated_at', 'created_by', 'updated_by', 'result_level_id'], 'integer'],
-            [['agent_id', 'center_id', 'county', 'constituency', 'ward'], 'required'],
-            [['agent_id', 'center_id',], 'unique'],
+            [['agent_id', 'center_id'], 'required'],
+            // [['agent_id', 'center_id',], 'unique'],
 
         ];
     }
