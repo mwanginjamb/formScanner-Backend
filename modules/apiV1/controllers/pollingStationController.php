@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: HP ELITEBOOK 840 G5
@@ -11,6 +12,7 @@ namespace app\modules\apiV1\controllers;
 
 use app\models\Candidate;
 use app\models\PollingCenter;
+use yii\base\DynamicModel;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
@@ -41,6 +43,24 @@ class PollingStationController extends ActiveController
         ];
 
         return $behaviours;
+    }
+
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['dataFilter'] = [
+            'class' => \yii\data\ActiveDataFilter::class,
+            'attributeMap' => [
+                'polling_station_code' => 'polling_station_code',
+
+            ],
+            'searchModel' => (new DynamicModel(['polling_station_code']))
+                ->addRule(['polling_station_code'], 'integer', ['min' => 1])
+
+        ];
+
+        return $actions;
     }
 
     protected function verbs()
