@@ -78,10 +78,10 @@ $form->errorSummary($model);
 <?php
 $directory = Yii::getAlias('@app') . '/web/background';
 @chdir($directory);
-$images = glob("*.{jpg,JPG,jpeg,JPEG,png,PNG}", GLOB_BRACE);
+//$images = glob("*.{jpg,JPG,jpeg,JPEG,png,PNG}", GLOB_BRACE);
 
 
-$random_img = $images[array_rand($images)];
+//$random_img = $images[array_rand($images)];
 
 
 
