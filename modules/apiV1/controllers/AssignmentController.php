@@ -15,6 +15,7 @@ use app\models\Candidate;
 use app\models\Counties;
 use app\models\PollingCenter;
 use app\models\Wards;
+use yii\base\DynamicModel;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
@@ -45,6 +46,24 @@ class AssignmentController extends ActiveController
         ];
 
         return $behaviours;
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['dataFilter'] = [
+            'class' => \yii\data\ActiveDataFilter::class,
+            'attributeMap' => [
+                'agent_id' => 'agent_id',
+                'center_id' => 'center_id'
+            ],
+            'searchModel' => (new DynamicModel(['agent_id', 'center_id']))
+                ->addRule(['agent_id'], 'integer', ['min' => 1])
+                ->addRule(['center_id'], 'integer', ['min' => 1])
+                ->addRule(['center_id', 'agent_id'], 'required')
+        ];
+
+        return $actions;
     }
 
     protected function verbs()
