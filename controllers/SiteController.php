@@ -183,7 +183,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-       //return $this->render('index');
+        //return $this->render('index');
         return $this->redirect('agent');
     }
 
@@ -250,5 +250,10 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
     }
 }
