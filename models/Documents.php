@@ -50,7 +50,7 @@ class Documents extends \yii\db\ActiveRecord
             [['description'], 'string', 'max' => 150],
             [['polling_station'], 'string', 'max' => 50],
             [['local_file_path', 'sharepoint_path'], 'string', 'max' => 250],
-            [['polling_station'], 'unique', 'message' => 'Votes for this center have already been tallied.'],
+            //[['polling_station'], 'unique', 'message' => 'Votes for this center have already been tallied.'],
             ['source', 'string', 'max' => 50],
             ['source', 'in', 'range' => ['app', 'sms', 'whatsapp']],
             // [['description','polling_station'], 'required'],
