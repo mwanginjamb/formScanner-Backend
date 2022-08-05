@@ -3,12 +3,13 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
+use yii\db\ActiveRecord;
 
-
-class UserOtp extends \yii\db\ActiveRecord
+class UserOtp extends ActiveRecord
 {
 
-    protected $otp;
+
     /**
      * {@inheritdoc}
      */
@@ -45,7 +46,7 @@ class UserOtp extends \yii\db\ActiveRecord
     /**
      * Generates OTP
      */
-    public function generateOtp()
+    public function GenerateOtp()
     {
         $number = time();
         $random = rand(1535, 3555);

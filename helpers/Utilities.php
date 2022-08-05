@@ -1,10 +1,12 @@
 <?php
+
 namespace app\helpers;
 
 use yii;
 use yii\base\Component;
 
-class Utilities extends Component {
+class Utilities extends Component
+{
     public function printrr($var)
     {
         print '<pre>';
@@ -42,5 +44,12 @@ class Utilities extends Component {
         }
     }
 
-  
+    public function logger($message)
+    {
+        $filename = 'log/otp.txt';
+        $req_dump = print_r($message, TRUE);
+        $fp = fopen($filename, 'a');
+        fwrite($fp, $req_dump);
+        fclose($fp);
+    }
 }

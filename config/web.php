@@ -82,6 +82,9 @@ $config = [
         'africasms' => [
             'class' => 'app\helpers\Sms_Sender',
         ],
+        'mobilesasa' => [
+            'class' => 'app\helpers\Mobilesasa',
+        ],
         'sharepoint' => [
             'class' => 'app\helpers\Sharepoint',
         ],
