@@ -10,6 +10,7 @@ use app\models\ResultsLevel;
 use app\models\User;
 use app\modules\apiV1\resources\UserResource;
 use yii\bootstrap4\Html;
+use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -30,6 +31,22 @@ class AgentCentersController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['logout', 'add-media', 'index', 'create', 'update', 'delete', 'view'],
+                    'rules' => [
+                        [
+                            'actions' => ['logout', 'index', 'create', 'update', 'delete', 'view'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['add-media'],
+                            'allow' => true,
+                            'roles' => ['?'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

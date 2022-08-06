@@ -6,6 +6,7 @@ use app\models\Candidate;
 use app\models\CandidateSearch;
 use app\models\PollingCenter;
 use app\models\ResultsLevel;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +25,22 @@ class CandidateController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['logout', 'add-media', 'index', 'create', 'update', 'delete', 'view'],
+                    'rules' => [
+                        [
+                            'actions' => ['logout', 'index', 'create', 'update', 'delete', 'view'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['add-media'],
+                            'allow' => true,
+                            'roles' => ['?'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
