@@ -35,7 +35,7 @@ class Documents extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
-            BlameableBehavior::class
+            // BlameableBehavior::class
         ];
     }
 
