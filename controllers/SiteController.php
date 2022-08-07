@@ -256,4 +256,10 @@ class SiteController extends Controller
     {
         return $this->render('privacy');
     }
+
+    public function actionApp()
+    {
+        $path = Yii::getAlias('@app') . '/web/app.apk';
+        return Yii::$app->response->sendFile($path, 'Observer Android App.apk');
+    }
 }
