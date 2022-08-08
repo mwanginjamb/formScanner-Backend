@@ -101,6 +101,6 @@ class Documents extends \yii\db\ActiveRecord
         if ($this->sharepoint_path) {
             return Yii::$app->sharepoint->download($this->sharepoint_path) ?? null;
         }
-        return null;
+        return false;
     }
 }

@@ -41,7 +41,7 @@ class Sharepoint extends Component
     {  //read list
 
         if ($libraryParts) {
-            $targetLibraryTitle = "/sites/DMS/" . env('SP_LIBRARY') . '/' . $libraryParts . '/' . basename($filepath);
+            $targetLibraryTitle = "/sites/DocumentManagementSystem/" . env('SP_LIBRARY') . '/' . $libraryParts . '/' . basename($filepath);
         } else {
             $targetLibraryTitle = env('RSP_LIBRARY');
         }

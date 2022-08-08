@@ -139,7 +139,7 @@ class SiteController extends Controller
                     \Yii::$app->sharepoint->sharepoint_attach($img_file, $LibraryParts);
                     // Create a record in Docs Table
                     $model->local_file_path = Url::home(true) . $img_file;
-                    $pathParts = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
+                    $pathParts = "//sites//DocumentManagementSystem//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
                     $pathParts = str_replace('.', "", $pathParts);
                     $path = $pathParts . $img_file;
                     $model->sharepoint_path = $path;
