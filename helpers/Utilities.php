@@ -52,4 +52,13 @@ class Utilities extends Component
         fwrite($fp, $req_dump);
         fclose($fp);
     }
+
+    public function smslogger($message)
+    {
+        $filename = 'log/sms.log';
+        $req_dump = print_r($message, TRUE);
+        $fp = fopen($filename, 'a');
+        fwrite($fp, $req_dump);
+        fclose($fp);
+    }
 }

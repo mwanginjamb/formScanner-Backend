@@ -283,7 +283,15 @@ class SiteController extends Controller
                     'phone_number' => $agent['phone_number'],
                 ])->one();
                 $user->ack_sms = 1;
-                $user->save();
+                if ($user->save()) {
+                    print 'SMS sent to: ' . $user->full_names;
+                    $msg = 'SMS sent to: ' . $user->full_names;
+                    Yii::$app->mobilesasa->smslogger($msg);
+                } else {
+                    print 'SMS not sent to: ' . $user->full_names;
+                    $msg = 'SMS sent to: ' . $user->full_names;
+                    Yii::$app->mobilesasa->smslogger($msg);
+                }
             }
         }
     }
