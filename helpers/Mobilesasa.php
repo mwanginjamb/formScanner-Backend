@@ -36,7 +36,7 @@ class Mobilesasa extends Component
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+       // curl_close($curl);
         // echo $response;
 
         if (curl_errno($curl)) {

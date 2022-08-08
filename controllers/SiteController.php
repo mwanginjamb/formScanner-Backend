@@ -286,11 +286,11 @@ class SiteController extends Controller
                 if ($user->save()) {
                     print 'SMS sent to: ' . $user->full_names;
                     $msg = 'SMS sent to: ' . $user->full_names;
-                    Yii::$app->mobilesasa->smslogger($msg);
+                    Yii::$app->utilities->smslogger($msg);
                 } else {
                     print 'SMS not sent to: ' . $user->full_names;
                     $msg = 'SMS sent to: ' . $user->full_names;
-                    Yii::$app->mobilesasa->smslogger($msg);
+                    Yii::$app->utilities->smslogger($msg);
                 }
             }
         }
@@ -298,7 +298,7 @@ class SiteController extends Controller
 
     public function getAgents()
     {
-        $agents = Summaryviewall::find()->limit(25)->asArray()->all(); //@todo filter by flags
+        $agents = Summaryviewall::find()->limit(15)->asArray()->all(); //@todo filter by flags
         return $agents;
     }
 }
