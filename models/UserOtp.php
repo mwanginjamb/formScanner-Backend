@@ -24,7 +24,7 @@ class UserOtp extends ActiveRecord
     public function rules()
     {
         return [
-            [['otp'], 'integer'],
+            [['otp', 'ack_sms'], 'integer'],
             ['full_names', 'string', 'max' => '150'],
             ['phone_number', 'string'],
             ['username', 'string', 'min' => 2, 'max' => 255],

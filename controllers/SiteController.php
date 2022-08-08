@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 use app\models\ContactForm;
 use app\models\PollingCenter;
 use app\models\Summaryviewall;
+use app\models\UserOtp;
 use Exception;
 
 class SiteController extends Controller
@@ -261,5 +262,35 @@ class SiteController extends Controller
     {
         $path = Yii::getAlias('@app') . '/web/app.apk';
         return Yii::$app->response->sendFile($path, 'Observer Android App.apk');
+    }
+
+    public function actionAcknowledge()
+    {
+        $Agents = $this->getAgents();
+        // Yii::$app->utilities->printrr($Agents);
+        if (count($Agents)) {
+            foreach ($Agents as $agent) {
+                //send sms
+                $number = $agent['phone_number'];
+                $name = $agent['full_names'];
+
+                $message = "Thank you " . $name . " for accepting to be a Kenya Kwanza agent, \r\n";
+                $message .= "We will be sending you instructions on how to perform results transmission. \r\n";
+                Yii::$app->mobilesasa->sendsms($number, $message);
+
+                // Update User
+                $user = UserOtp::find()->where([
+                    'phone_number' => $agent['phone_number'],
+                ])->one();
+                $user->ack_sms = 1;
+                $user->save();
+            }
+        }
+    }
+
+    public function getAgents()
+    {
+        $agents = Summaryviewall::find()->limit(25)->asArray()->all(); //@todo filter by flags
+        return $agents;
     }
 }
