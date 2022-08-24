@@ -3,12 +3,13 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
+use yii\db\ActiveRecord;
 
-
-class UserOtp extends \yii\db\ActiveRecord
+class UserOtp extends ActiveRecord
 {
 
-    protected $otp;
+
     /**
      * {@inheritdoc}
      */
@@ -23,7 +24,7 @@ class UserOtp extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['otp'], 'integer'],
+            [['otp', 'ack_sms'], 'integer'],
             ['full_names', 'string', 'max' => '150'],
             ['phone_number', 'string'],
             ['username', 'string', 'min' => 2, 'max' => 255],
@@ -45,7 +46,7 @@ class UserOtp extends \yii\db\ActiveRecord
     /**
      * Generates OTP
      */
-    public function generateOtp()
+    public function GenerateOtp()
     {
         $number = time();
         $random = rand(1535, 3555);

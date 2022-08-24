@@ -116,16 +116,23 @@ class UserController extends Controller
         return $agents;
     }
 
+    public function actionAgentById($id)
+    {
+        //$model = new Summaryviewall();
+        $agent = Summaryviewall::find()->where(['username' => $id])->all();
+        return $agent;
+    }
+
     public function actionRequestOtp()
     {
         $model = new \app\models\OtpRequestForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->sendOtp()) {
-            return ['otp' => $model->_otp];
+            return ['otp' => $model];
         }
 
         Yii::$app->response->statusCode = 422;
         return [
-            'errors' => $model->errors,
+            'errors' => $model->sendOtp(), // $model->errors,
         ];
     }
 

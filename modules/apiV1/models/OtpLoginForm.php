@@ -12,6 +12,7 @@ use yii\base\Model;
 class OtpLoginForm extends \app\models\OtpLoginForm
 {
 
+
     /**
      * Finds user by [[username]]
      *

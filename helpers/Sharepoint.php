@@ -41,7 +41,7 @@ class Sharepoint extends Component
     {  //read list
 
         if ($libraryParts) {
-            $targetLibraryTitle = "/sites/DMS/" . env('SP_LIBRARY') . '/' . $libraryParts . '/' . basename($filepath);
+            $targetLibraryTitle = "/sites/DocumentManagementSystem/" . env('SP_LIBRARY') . '/' . $libraryParts . '/' . basename($filepath);
         } else {
             $targetLibraryTitle = env('RSP_LIBRARY');
         }
@@ -61,7 +61,7 @@ class Sharepoint extends Component
                 ->add($fileCreationInformation);
             $ctx->executeQuery();
         } catch (\Exception $e) {
-            throw new \yii\web\HttpException(500, 'Sharepoint Error: ' . $e->getMessage() . ' Path Given: ' . $localFilePath);
+            throw new \yii\web\HttpException(500, 'Sharepoint Error: ' . $e->getMessage() . ' Path Given: ' . $targetLibraryTitle);
             // 'Authentication failed: ' . $e->getMessage() . "\n";
         }
     }

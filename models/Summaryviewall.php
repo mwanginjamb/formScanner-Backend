@@ -16,6 +16,7 @@ use Yii;
  * @property string|null $polling_station_name
  * @property string|null $polling_station_code
  * @property int $id
+ * @property int $ack_sms
  */
 class Summaryviewall extends \yii\db\ActiveRecord
 {
@@ -35,7 +36,7 @@ class Summaryviewall extends \yii\db\ActiveRecord
     {
         return [
             [['phone_number'], 'required'],
-            [['agent_id', 'center_id', 'id'], 'integer'],
+            [['agent_id', 'center_id', 'id', 'ack_sms'], 'integer'],
             [['full_names'], 'string', 'max' => 1024],
             [['username'], 'string', 'max' => 255],
             [['phone_number'], 'string', 'max' => 10],

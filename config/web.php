@@ -64,7 +64,6 @@ $config = [
                         'apiV1/county',
                         'apiV1/sub-county',
                         'apiV1/agent-poll',
-                        'apiV1/assignment',
 
                     ]
                 ]
@@ -81,6 +80,9 @@ $config = [
         ],
         'africasms' => [
             'class' => 'app\helpers\Sms_Sender',
+        ],
+        'mobilesasa' => [
+            'class' => 'app\helpers\Mobilesasa',
         ],
         'sharepoint' => [
             'class' => 'app\helpers\Sharepoint',

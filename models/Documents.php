@@ -35,7 +35,7 @@ class Documents extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
-            BlameableBehavior::class
+            // BlameableBehavior::class
         ];
     }
 
@@ -50,7 +50,7 @@ class Documents extends \yii\db\ActiveRecord
             [['description'], 'string', 'max' => 150],
             [['polling_station'], 'string', 'max' => 50],
             [['local_file_path', 'sharepoint_path'], 'string', 'max' => 250],
-            [['polling_station'], 'unique', 'message' => 'Votes for this center have already been tallied.'],
+            //[['polling_station'], 'unique', 'message' => 'Votes for this center have already been tallied.'],
             ['source', 'string', 'max' => 50],
             ['source', 'in', 'range' => ['app', 'sms', 'whatsapp']],
             // [['description','polling_station'], 'required'],
@@ -101,6 +101,6 @@ class Documents extends \yii\db\ActiveRecord
         if ($this->sharepoint_path) {
             return Yii::$app->sharepoint->download($this->sharepoint_path) ?? null;
         }
-        return null;
+        return false;
     }
 }

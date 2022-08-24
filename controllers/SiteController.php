@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 use app\models\ContactForm;
 use app\models\PollingCenter;
 use app\models\Summaryviewall;
+use app\models\UserOtp;
 use Exception;
 
 class SiteController extends Controller
@@ -139,7 +140,7 @@ class SiteController extends Controller
                     \Yii::$app->sharepoint->sharepoint_attach($img_file, $LibraryParts);
                     // Create a record in Docs Table
                     $model->local_file_path = Url::home(true) . $img_file;
-                    $pathParts = "//sites//DMS//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
+                    $pathParts = "//sites//DocumentManagementSystem//" . env('SP_LIBRARY') . '//' . $LibraryParts . '//';
                     $pathParts = str_replace('.', "", $pathParts);
                     $path = $pathParts . $img_file;
                     $model->sharepoint_path = $path;
@@ -183,6 +184,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        //return $this->render('index');
         return $this->redirect('agent');
     }
 
@@ -249,5 +251,54 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
+    }
+
+    public function actionApp()
+    {
+        $path = Yii::getAlias('@app') . '/web/app.apk';
+        return Yii::$app->response->sendFile($path, 'Observer Android App.apk');
+    }
+
+    public function actionAcknowledge()
+    {
+        $Agents = $this->getAgents();
+        // Yii::$app->utilities->printrr($Agents);
+        if (count($Agents)) {
+            foreach ($Agents as $agent) {
+                //send sms
+                $number = $agent['phone_number'];
+                $name = $agent['full_names'];
+
+                $message = "Thank you " . $name . " for accepting to be a Kenya Kwanza agent, \r\n";
+                $message .= "We will be sending you instructions on how to perform results transmission. \r\n";
+                Yii::$app->mobilesasa->sendsms($number, $message);
+
+                // Update User
+                $user = UserOtp::find()->where([
+                    'phone_number' => $agent['phone_number'],
+                ])->one();
+                $user->ack_sms = 1;
+                if ($user->save()) {
+                    print 'SMS sent to: ' . $user->full_names;
+                    $msg = 'SMS sent to: ' . $user->full_names;
+                    Yii::$app->utilities->smslogger($msg);
+                } else {
+                    print 'SMS not sent to: ' . $user->full_names;
+                    $msg = 'SMS sent to: ' . $user->full_names;
+                    Yii::$app->utilities->smslogger($msg);
+                }
+            }
+        }
+    }
+
+    public function getAgents()
+    {
+        $agents = Summaryviewall::find()->limit(15)->asArray()->all(); //@todo filter by flags
+        return $agents;
     }
 }
