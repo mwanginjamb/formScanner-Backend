@@ -9,16 +9,18 @@
 
 namespace app\modules\apiV1\controllers;
 
-
+use app\models\AgentCenters;
+use app\models\Assignment;
 use app\models\Candidate;
+use app\models\Counties;
 use app\models\PollingCenter;
-use yii\base\DynamicModel;
+use app\models\Wards;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
-class PollingStationController extends ActiveController
+class AssignmentController extends ActiveController
 {
-    public $modelClass = PollingCenter::class;
+    public $modelClass = Assignment::class;
 
     public function behaviors()
     {
@@ -43,24 +45,6 @@ class PollingStationController extends ActiveController
         ];
 
         return $behaviours;
-    }
-
-
-    public function actions()
-    {
-        $actions = parent::actions();
-        $actions['index']['dataFilter'] = [
-            'class' => \yii\data\ActiveDataFilter::class,
-            'attributeMap' => [
-                'polling_station_code' => 'polling_station_code',
-
-            ],
-            'searchModel' => (new DynamicModel(['polling_station_code']))
-                ->addRule(['polling_station_code'], 'integer', ['min' => 1])
-
-        ];
-
-        return $actions;
     }
 
     protected function verbs()
